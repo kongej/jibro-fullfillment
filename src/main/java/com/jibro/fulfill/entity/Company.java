@@ -1,11 +1,9 @@
 package com.jibro.fulfill.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,21 +21,18 @@ import lombok.ToString;
 public class Company extends BaseEntity{
 	
 	@Id
-	@GenericGenerator(
-			name = "idGenerator", 
-			// 전략을 정의한 클래스 Full Path 입력한다 
-			strategy = "com.jibro.fulfill.entity.IdGenerator",	
-			// UUID란 이름으로 넘길 파라미터 값을 정한다 
-			parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "CO")	
-		)
-	@GeneratedValue(generator = "idGenerator")
+	@Column(length = 50)
 	private String companyId;			//거래처코드
-		
+	
+	@Column(length = 50, nullable = false)
 	private String companyName;			//거래처명
 	
+	@Column(length = 50, nullable = false)
 	private String companyEmail;		//거래처이메일
 	
+	@Column(length = 50, nullable = false)
 	private String companyContact;		//거래처연락처
 
-	private String companyCategory;		//거래처카테고리 판매자 :  / 제조사 :  / 택배사 : 
+	@Column(length = 1, nullable = false)
+	private String companyCategory;		//거래처카테고리 판매자 : S / 제조사 : M / 택배사 : D
 }

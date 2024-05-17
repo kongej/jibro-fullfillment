@@ -1,10 +1,14 @@
 package com.jibro.fulfill.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,22 +26,20 @@ import lombok.ToString;
 public class Ongoing extends BaseEntity{
 	
 	@Id
+	@GenericGenerator(name = "idGenerator", strategy = "com.jibro.fulfill.entity.IdGenerator")
+	@GeneratedValue(generator = "idGenerator")
 	private String ongoingId;			//출고코드
 	
 	@ManyToOne
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "order_id", nullable = false)
 	@ToString.Exclude
 	private Order order;				//주문
-	
+
+	@Column(length = 50, nullable = false, unique = true)
 	private Integer invc;				//송장번호
-	
-	@ManyToOne
-	@JoinColumn(name = "company_id")
-	@ToString.Exclude
-	private Company company;			//택배사
 
 	@ManyToOne
-	@JoinColumn(name = "delever_id")
+	@JoinColumn(name = "delever_id", nullable = false)
 	@ToString.Exclude
 	private Company delever;			//택배사
 	

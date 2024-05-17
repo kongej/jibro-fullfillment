@@ -1,5 +1,6 @@
 package com.jibro.fulfill.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,21 +26,19 @@ import lombok.ToString;
 public class Incoming extends BaseEntity{
 	
 	@Id
-	@GenericGenerator(
-			name = "idGenerator", 
-			// 전략을 정의한 클래스 Full Path 입력한다 
-			strategy = "com.jibro.fulfill.entity.IdGenerator"
-			// UUID란 이름으로 넘길 파라미터 값을 정한다 	
-		)
+	@GenericGenerator(name = "idGenerator", strategy = "com.jibro.fulfill.entity.IdGenerator")
 	@GeneratedValue(generator = "idGenerator")
 	private String incomingId;				//입고코드
 	
+	@Column(length = 50, nullable = false)
 	private Integer incomingCount;			//입고수량
 	
+	@Column(length = 50, nullable = false)
 	private Integer total;					//총가격	
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	@ToString.Exclude
 	private Product product;				//제품
+	
 }

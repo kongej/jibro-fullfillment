@@ -22,21 +22,11 @@ import lombok.ToString;
 public class BaseEntity {
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    /*
-    @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
-    */
-
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    /*
-    @LastModifiedBy
-    private String updatedBy;
-    */
 
 }
