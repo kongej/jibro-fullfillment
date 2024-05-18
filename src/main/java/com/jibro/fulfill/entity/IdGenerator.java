@@ -29,7 +29,7 @@ public class IdGenerator implements IdentifierGenerator {
 	            String maxIdStr = maxId.toString();
 	            num = Integer.parseInt(maxIdStr.substring(maxIdStr.lastIndexOf("_") + 1)) + 1;
 	        }
-	    }
+	    }  
 
 	    String suffix = "";
 	    if (object instanceof Incoming) {
