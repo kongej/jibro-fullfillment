@@ -8,4 +8,5 @@ import com.jibro.fulfill.entity.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
 
+
 }

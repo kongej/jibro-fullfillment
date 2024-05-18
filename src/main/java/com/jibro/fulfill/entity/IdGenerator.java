@@ -9,22 +9,36 @@ import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.query.Query;
 
 public class IdGenerator implements IdentifierGenerator {
-	private static final long serialVersionUID = 1L;
-	
-    @Override
-    public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
-        String formattedDate = LocalDate.now().toString().replace("-", "");
+ 
+	@Override
+	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+	    String formattedDate = LocalDate.now().toString().replace("-", "");
 
-        String queryStr = String.format("select max(id) from %s", object.getClass().getSimpleName());
-        Query<String> query = session.createQuery(queryStr, String.class);
-        String maxId = query.uniqueResult();
+	    String queryStr = String.format("select count(id) from %s where id like :prefix", object.getClass().getSimpleName());
+	    Query<Long> query = session.createQuery(queryStr, Long.class);
+	    query.setParameter("prefix", formattedDate + "%");
+	    Long count = query.uniqueResult();
 
-        int suffix = 1;
-        if (maxId != null) {
-            String maxIdStr = maxId.toString();
-            suffix = Integer.parseInt(maxIdStr.substring(maxIdStr.lastIndexOf("-") + 1)) + 1;
-        }
+	    int num = 1;
+	    if (count != null) {
+	        String queryStr1 = String.format("select max(id) from %s where id like :prefix", object.getClass().getSimpleName());
+	        Query<String> query1 = session.createQuery(queryStr1, String.class);
+	        query1.setParameter("prefix", formattedDate + "%");
+	        String maxId = query1.uniqueResult();
+	        if (maxId != null) {
+	            String maxIdStr = maxId.toString();
+	            num = Integer.parseInt(maxIdStr.substring(maxIdStr.lastIndexOf("_") + 1)) + 1;
+	        }
+	    }
 
-        return formattedDate + "_" + String.format("%03d", suffix);
-    }
+	    String suffix = "";
+	    if (object instanceof Incoming) {
+	        suffix = String.format("%03d", num);
+	    } else if (object instanceof Ongoing) {
+	        suffix = String.format("%08d", num);
+	    }
+
+	    return formattedDate + "_" + suffix;
+	}
+
 }
