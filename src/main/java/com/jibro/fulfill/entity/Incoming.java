@@ -8,18 +8,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "incomings")
@@ -34,8 +31,8 @@ public class Incoming extends BaseEntity{
 	private Integer incomingCount;			//입고수량
 	
 	@Column(length = 50, nullable = false)
-	private Integer total;					//총가격	
-	
+	private Integer total;					//총가격
+
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	@ToString.Exclude
