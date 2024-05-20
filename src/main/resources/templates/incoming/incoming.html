@@ -5,9 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="">
-        <input type="text" name="productId">
-        <input type="number" name="count">
+    <form th:action="@{/incoming/form}" method="post">
+        <input type="text" name="product_id">
+        <input type="number" name="incoming_quantity">
         <button type="submit">Submit</button>
     </form>
 </body>
