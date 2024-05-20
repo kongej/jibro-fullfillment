@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -30,7 +31,7 @@ public class Ongoing extends BaseEntity{
 	@GeneratedValue(generator = "idGenerator")
 	private String ongoingId;			//출고코드
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "order_id", nullable = false)
 	@ToString.Exclude
 	private Order order;				//주문

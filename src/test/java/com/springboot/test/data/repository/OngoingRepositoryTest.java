@@ -1,8 +1,9 @@
 package com.springboot.test.data.repository;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.transaction.Transactional;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class OngoingRepositoryTest {
         productRepository.save(product);
 
         Order order = new Order();
-        order.setOrderId("O1");
+        order.setOrderId("O2");
         order.setProduct(product);
         order.setOrdererName("주문자");
         order.setPhoneNum("010-1111-2222");
@@ -68,19 +69,22 @@ public class OngoingRepositoryTest {
         order.setCount(1);
         order.setOrderStatus(1);
         order.setSeller(seller);
-        orderRepository.save(order);
-
+       
+        order = orderRepository.save(order);
+        
         Ongoing ongoing = new Ongoing();
-        ongoing.setInvc(35679111);
+        ongoing.setInvc(221141);
         ongoing.setOrder(order);
         ongoing.setDelever(delever);
 
         // Ongoing 저장
-       ongoingRepository.save(ongoing);
+        ongoing = ongoingRepository.save(ongoing); // Save and get the saved instance
 
-        // 저장된 Ongoing이 null이 아닌지 확인
-        assertNotNull(ongoing);
-        
-        System.out.println(ongoing);
+        // 저장된 Ongoing을 조회
+        System.out.println("savedOrder : " + orderRepository.findById(
+             ongoing.getOrder().getOrderId()).get());
+
+        System.out.println("savedOngoing : " + ongoingRepository.findById(
+             ongoing.getOngoingId()).get());
     }
 }
