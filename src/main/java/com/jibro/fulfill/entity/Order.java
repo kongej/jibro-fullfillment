@@ -1,5 +1,7 @@
 package com.jibro.fulfill.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,20 +10,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
+@Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "orders")
-public class Order extends BaseEntity {
+public class Order {
 	
 	@Id
 	@Column(length = 50)
@@ -55,6 +54,13 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "seller_id", nullable = false)
 	@ToString.Exclude
 	private Company seller; // 판매자
+	
+	@Column(nullable = false)
+	private LocalDateTime orderedDate; // 주문날짜
+	
+	@LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedDate;
 	
 	public Order(String orderId, Product product, String ordererName, String phoneNum, String address, Integer count, Company seller) {
 		this.orderId = orderId;
