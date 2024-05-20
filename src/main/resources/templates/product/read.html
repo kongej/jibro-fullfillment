@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<title>상품 목록</title>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<th>제품 번호</th>
+				<th>이미지</th>
+				<th>제품명</th>
+				<th>제조사</th>
+				<th>원가</th>
+				<th>수량</th>
+				<th>안전수량</th>
+				<th>불량수량</th>
+			</tr>
+			<tr>
+				<td th:text="${productReadResponseDto.productId}"></td>
+				<td><img th:src="@{${productReadResponseDto.productImage}}" alt="-" /></td>
+				<td th:text="${productReadResponseDto.productName}"></td>
+				<td th:text="${productReadResponseDto.maker_id}"></td>
+				<td th:text="${productReadResponseDto.cost}"></td>
+				<td th:text="${productReadResponseDto.stockCount}"></td>
+				<td th:text="${productReadResponseDto.safetyStock}"></td>
+				<td th:text="${productReadResponseDto.defectiveCount}"></td>
+			</tr>
+	  </table>
+	  <a th:href="@{/product/edit/{productId}(productId=${productReadResponseDto.productId})}"><input type="button" value="수정"/></a>
+	  <form method="POST" th:action="@{/product/delete}" th:object="${productReadResponseDto}">
+			<input type="hidden" th:name="productId" th:value="*{productId}" />
+			<input type="submit" value="삭제" />
+	  </form>		  
+	  <input type="button" value="목록" onclick="location.href='/product/list'" />
+	</body>
+</html>

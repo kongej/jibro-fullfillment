@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>상품 목록 추가</title>
+</head>
+<body>
+	<h1>신규 상품 추가</h1>
+	<form method="POST" action="/product/insert">
+		<p>상품번호 <input type="text" name="productId" placeholder="신규 상품번호 입력" required/></p>
+		<p>상품명 <input type="text" name="productName" placeholder="신규 상품명 입력" required/></p>
+		<p>제조사 <input type="text" name="maker" placeholder="제조사 입력" required/></p>
+		<p>원가 <input type="text" name="cost" placeholder="원가 입력" min="0" required/></p>
+		<p>수량 <input type="text" name="stockCount" placeholder="수량 입력" min="0"/></p>
+		<p>안전수량 <input type="text" name="safetyStock" placeholder="안전재고 수량 입력" min="0"/></p>
+		<p> <input type="hidden" name="defectiveCount" value=0 /></p>
+		<p>
+			<input type="submit" value="등록"/>
+			<input type="reset" value="초기화" />
+			<input type="button" value="목록" onclick="location.href='/product/list'"/>
+		</p>
+	</form>
+</body>
+</html>

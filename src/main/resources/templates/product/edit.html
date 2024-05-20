@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>상품 정보 수정</title>
+	</head>
+	<body>
+		<h1>상품수정</h1>
+		<form method="POST" th:action="@{/product/edit/{productId}(productId=*{productId})}" th:object="${productModResponseDto}">
+			<p>
+				상품번호 
+				<input type="text" name="productId" th:value="*{productId}" readOnly/>
+			</p>
+			<p>상품명 <input type="text" name="productName" th:value="*{productName}" required/></p>
+			<p>제조사 <input type="text" name="maker" th:value="*{maker_id}" required/></p>
+			<p>원가 <input type="text" name="cost" th:value="*{cost}" required/></p>
+			<p>수량 <input type="text" name="stockCount" th:value="*{stockCount}" min="0"/></p>
+			<p>안전수량 <input type="text" name="safetyStock" th:value="*{safetyStock}" min="0"/></p>
+			<p>불량수량 <input type="text" name="defectiveCount" th:value="*{defectiveCount}" min="0"/></p>
+			<p>
+				<input type="submit" value="등록"/>
+				<input type="reset" value="초기화" />
+				<input type="button" value="목록" onclick="location.href='/product/list'"/>
+			</p>
+		</form>
+	</body>
+</html>

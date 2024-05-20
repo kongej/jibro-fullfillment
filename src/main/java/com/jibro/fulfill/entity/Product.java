@@ -7,15 +7,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "products")
@@ -61,6 +62,17 @@ public class Product extends BaseEntity{
         this.safetyStock = 0;
         this.stockCount = 0;
         this.defectiveCount = 0;
+        this.maker = maker;
+    }
+    
+    public Product(String productId, String productName, Integer cost, Integer safetyStock, Integer stockCount, Integer defectiveCount, String productImage, Company maker) {
+        this.productId = productId;
+        this.productName = productName;
+        this.cost = cost;
+        this.safetyStock = safetyStock;
+        this.stockCount = stockCount;
+        this.defectiveCount = defectiveCount;
+        this.productImage = productImage;
         this.maker = maker;
     }
 }
