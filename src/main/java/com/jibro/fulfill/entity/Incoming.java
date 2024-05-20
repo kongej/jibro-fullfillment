@@ -36,6 +36,9 @@ public class Incoming extends BaseEntity{
 	@Column(length = 50, nullable = false)
 	private Integer total;					//총가격	
 	
+	@Column(length = 1, nullable = false, columnDefinition = "int default 1")
+	private Integer orderStatus;		//상태 1:입고 대기 2:입고 완료
+	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	@ToString.Exclude

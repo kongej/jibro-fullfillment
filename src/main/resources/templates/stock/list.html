@@ -2,23 +2,73 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>stock Page</title>
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	p {
+		display: inline-block;
+	}
+	
+	input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: inner-spin-button;
+		opacity: 1;
+	}
+</style>
+
 </head>
 <body>
-<h1>재고 관리</h1>
-</body>
-<div class="list_container">
-	<table style="width: 1020px;">
-		<tr></tr>
-	</table>
-	<div class="list main" style="border-collapse: collapse; width:1020px;">
-		<div style="display: table-cell; border:1px solid; width:50%;">하이</div>
-		<div style="display: table-cell; border:1px solid;">하이</div>
-		<div style="display: table-cell; border:1px solid;">하이</div>
-		<div style="display: table-cell; border:1px solid;">하이</div>
+	<h1>재고 관리</h1>
+
+	<div align="right" style="width: 1020px;">
+	<input type="text" ><button>검색</button>
 	</div>
 	
-</div>
+	<div class="list_container">
+		<table style="width: 1020px; border: solid 1px; border-collapse: collapse; text-align: center;">
+			<tr style="border: solid 1px;">
+				<td style="border: solid 1px;"><p>번호</p></td>
+				<td style="border: solid 1px;"><p>제품번호</p></td>
+				<td style="border: solid 1px;"><p>제품명</p></td>
+				<td style="border: solid 1px;"><p>수량</p></td>
+				<td style="border: solid 1px;"><p>안전수량</p></td>
+				<td style="border: solid 1px;"><p>거래처 코드</p></td>
+			</tr>
+			<tr th:each="stockList : ${stockList}">
+				<td th:text="${stockList.productId}" align="center"></td>
+			</tr>
+			<tr>
+				<td style="border: solid 1px;"><p>예시</p></td>
+				<td style="border: solid 1px;"><p>2024518</p></td>
+				<td style="border: solid 1px;"><p>냉장소</p></td>
+				<td style="border: solid 1px;"><p>50</p></td>
+				<td style="border: solid 1px;">
+					<form action="/stock/update" method="post">
+						<input type="hidden" name="productId" value="P0001">
+						<input type="number" name="safetyStock" value="6"  min=0 step=1 style="text-align:center; width: 50px;">
+						<input type="submit" value="수정" style="width: 40px;">
+					</form>
+				</td>
+				<td style="border: solid 1px;"><p>CJ</p></td>
+			</tr>
+			<tr>
+				<td style="border: solid 1px;"><p>예시2</p></td>
+				<td style="border: solid 1px;"><p>2024518</p></td>
+				<td style="border: solid 1px;"><p>냉장고</p></td>
+				<td style="border: solid 1px;"><p>24</p></td>
+				<td style="border: solid 1px;">
+					<form action="" method="post">
+						<input type="number" name="stock" value="3"  min=0 step=1 style="text-align:center; width: 50px;">
+						<input type="submit" value="수정" style="width: 40px;">
+					</form>
+				</td>
+				<td style="border: solid 1px;"><p>CJ</p></td>
+			</tr>
+		</table>
+	</div>
 
 
-
+</body>
 </html>

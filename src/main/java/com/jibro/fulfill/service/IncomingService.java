@@ -1,5 +1,9 @@
 package com.jibro.fulfill.service;
 
-public interface IncomingService {
+import java.util.List;
 
+import com.jibro.fulfill.dto.incoming.IncomingListResponseDto;
+
+public interface IncomingService {
+	List<IncomingListResponseDto> incomingList() throws Exception;
 }
