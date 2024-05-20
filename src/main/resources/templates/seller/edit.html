@@ -1,13 +1,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>상품 정보 수정</title>
+		<title>판매처 정보 수정</title>
 	</head>
 	<body>
-
+		<h1>판매처 정보 수정</h1>
+		<form method="POST" th:action="@{/seller/edit/{companyId}(companyId=*{companyId})}" th:object="${sellerModResponseDto}">
+			<p>
+				판매처 코드 
+				<input type="text" name="companyId" th:value="*{companyId}" readOnly/>
+			</p>
+			<p>판매처명 <input type="text" name="companyName" th:value="*{companyName}" required/></p>
+			<p>이메일 <input type="text" name="companyEmail" th:value="*{companyEmail}" required/></p>
+			<p>연락처 <input type="text" name="companyContact" th:value="*{companyContact}" required/></p>
+			<p>카테고리 <input type="text" name="companyCategory" th:value="*{companyCategory}" readOnly/></p>
+			<p>
+				<input type="submit" value="수정"/>
+				<input type="reset" value="초기화" />
+				<input type="button" value="목록" onclick="location.href='/seller/list'"/>
+			</p>
+		</form>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+			    var form = document.querySelector('form');
+			
+			    form.addEventListener('submit', function (event) {
+			        var companyIdInput = document.querySelector('input[name="companyId"]');
+			        var companyIdValue = companyIdInput.value.trim();
+			
+			        if (!companyIdValue.startsWith('S')) {
+			            alert('판매처 코드는 "S"로 시작해야 합니다.');
+			            event.preventDefault(); 
+			        }
+			    });
+			});
+		</script>
 	</body>
 </html>
-<!-- *{price} 에서 *은 오브젝트
-     DTO의 멤버변수로 value값이
-     설정되어 있기 때문에 파라미터 명을
-     다르게 입력해도 됨
-                             -->

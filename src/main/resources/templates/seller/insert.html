@@ -1,8 +1,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>상품 목록 추가</title>
+<title>신규 판매처 추가</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
+ 	<h1>신규 판매처 등록</h1>
+ 	<form method="post" action="/seller/insert">
+ 		<p>판매처 코드 <input type="text" name="companyId" placeholder="작성규칙)S + 판매처 첫 이니셜 + 순번" required/></p>
+ 		<p>판매처명 <input type="text" name="companyName" placeholder="판매처명을 입력하세요" required/></p>
+ 		<p>이메일 <input type="email" name="companyEmail" placeholer="이메일을 입력하세요" required/></p>
+ 		<p>연락처 <input type="text" name="companyContact" placeholder="연락처를 입력하세요" alt="-"/></p>
+ 		<p><input type="hidden" name="companyCategory" value="S"/></p>
+ 		<p>
+ 			<input type="submit" value="등록"/>
+ 			<input type="reset" value="초기화"/>
+ 			<input type="button" value="목록" onclick="location.href='/seller/list'"/>
+ 		</p>
+ 	</form>
+ 	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+		    var form = document.querySelector('form');
+		
+		    form.addEventListener('submit', function (event) {
+		        var companyIdInput = document.querySelector('input[name="companyId"]');
+		        var companyIdValue = companyIdInput.value.trim();
+		
+		        if (!companyIdValue.startsWith('S')) {
+		            alert('판매처 코드는 "S"로 시작해야 합니다.');
+		            event.preventDefault(); // 폼 제출을 막습니다.
+		        }
+		    });
+		});
+	</script>
 </body>
 </html>

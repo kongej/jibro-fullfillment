@@ -50,7 +50,7 @@ public class ProductController {
 	// 상품 입력 기능
 	@PostMapping("/product/insert")
 	public String insert(ProductInsertDto productInsertDto){
-		String productId = this.productService.insert(productInsertDto);		
+		String productId = this.productService.insert(productInsertDto);	
 		return "redirect:/product/list";
 	}
 	
