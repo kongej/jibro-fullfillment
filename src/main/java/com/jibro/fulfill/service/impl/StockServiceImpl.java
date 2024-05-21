@@ -1,30 +1,39 @@
 package com.jibro.fulfill.service.impl;
 
-import com.jibro.fulfill.dto.product.ProductStockDto;
-import com.jibro.fulfill.entity.Incoming;
-import com.jibro.fulfill.repository.IncomingRepository;
-import com.jibro.fulfill.repository.StockRepository;
-import com.jibro.fulfill.service.StockService;
-import org.springframework.beans.factory.annotation.Autowired;
-/*
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.jibro.fulfill.dto.stock.StockListResponseDto;
+import com.jibro.fulfill.dto.stock.StockUpdateResponseDto;
+import com.jibro.fulfill.entity.Product;
+import com.jibro.fulfill.repository.ProductRepository;
+import com.jibro.fulfill.service.StockService;
+
 @Service
 public class StockServiceImpl implements StockService {
-    private final StockRepository stockRepository;
-    private final IncomingRepository incomingRepository;
+	private ProductRepository productRepository;
+	
+	public StockServiceImpl(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
+	
+	@Override
+	public List<StockListResponseDto> stockList() throws Exception {
+		List<Product> stocks;
+		stocks= this.productRepository.findAll();
+		
+		return stocks.stream().map(stock-> new StockListResponseDto(stock)).collect(Collectors.toList());
+	}
 
-    @Autowired
-    public StockServiceImpl(StockRepository stockRepository, IncomingRepository incomingRepository){
-        this.stockRepository = stockRepository;
-        this.incomingRepository = incomingRepository;
-    }
-    @Override
-    public List<ProductStockDto> allStock(Incoming incoming) throws Exception {
-        Long incomingStock = incomingRepository.getTotalQuantityByProduct(incoming);
+	@Override
+	public void stockUpdate(StockUpdateResponseDto stockUpdateResponseDto) throws NoSuchElementException {
+		Product product = this.productRepository.findById(stockUpdateResponseDto.getProductId()).orElseThrow();
+		product = stockUpdateResponseDto.fill(product);
+		this.productRepository.save(product);
+		System.out.println("완료");
+	}
 
-        return null;
-    }
 }
-*/

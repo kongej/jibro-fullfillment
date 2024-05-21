@@ -1,8 +1,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 	<title>상품 목록</title>
+	<meta charset="UTF-8">
 	</head>
 	<body>
-
+		<table>
+			<tr>
+				<th>거래처코드</th>
+				<th>거래처명</th>
+				<th>이메일</th>
+				<th>연락처</th>
+				<th>카테고리</th>
+				<th></th>
+			</tr>
+			<tr th:each="vendor : ${vendors}">
+				<td th:text="${vendor.companyId}"></td>
+				<td th:text="${vendor.companyName}"></td>
+				<td th:text="${vendor.companyEmail}"></td>
+				<td th:text="${vendor.companyContact}"></td>
+<!-- 				<td th:text="${vendor.companyCategory}"></td> -->
+				<td>
+					  <span th:if="${vendor.companyCategory == 'D'}">택배사</span>
+          			  <span th:if="${vendor.companyCategory == 'M'}">제조사</span>
+				</td>
+				<td>
+					<a th:href="@{/vendor/edit/{companyId}(companyId=${vendor.companyId})}"><input type="button" value="수정"/></a>
+				</td>
+				<td>		
+					<form method="POST" th:action="@{/vendor/delete/{companyId}(companyId=*{companyId})}">
+						<input type="hidden" th:name="companyId" th:value="${vendor.companyId}" />
+						<input type="submit" value="삭제" />
+					</form>	
+				</td>	
+			</tr>
+		</table>
+		<a th:href="@{/vendor/insert}"><input type="button" value="신규 거래처 추가"/></a>		
 	</body>
 </html>

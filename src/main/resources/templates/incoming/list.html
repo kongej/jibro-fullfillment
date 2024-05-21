@@ -2,9 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Incoming Page</title>
+<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	p {
+		display: inline-block;
+	}
+</style>
 </head>
 <body>
-th
-인컴인컴
+	<h1>입고 관리</h1>
+
+	<div align="right" style="width: 1020px;">
+	<input type="text" ><button>검색</button>
+	</div>
+
+	<div class="list_container">
+		<table style="width: 1020px; border: solid 1px; border-collapse: collapse; text-align: center;">
+			<tr style="border: solid 1px;">
+				<td style="border: solid 1px;"><p>번호</p></td>
+				<td style="border: solid 1px;"><p>주문 상태</p></td>
+				<td style="border: solid 1px;"><p>입고번호</p></td>
+				<td style="border: solid 1px;"><p>입고날짜</p></td>
+				<td style="border: solid 1px;"><p>거래처 코드</p></td>
+				<td style="border: solid 1px;"><p>수량</p></td>
+				<td style="border: solid 1px;"><p>원가</p></td>
+				<td style="border: solid 1px;"><p>총 가격</p></td>
+			</tr>
+			<tr th:each="incomingList : ${incomingList}">
+				<td th:text="${incomingList.product.productName}" align="center"></td>
+			</tr>
+			<tr>
+				<td style="border: solid 1px;"><p>예시1</p></td>
+				<td style="border: solid 1px;"><p>입고대기</p></td>
+				<td style="border: solid 1px;"><p>2024518</p></td>
+				<td style="border: solid 1px;"><p> </p></td>
+				<td style="border: solid 1px;"><p>LG</p></td>
+				<td style="border: solid 1px;"><p>5</p></td>
+				<td style="border: solid 1px;"><p>1234</p></td>
+				<td style="border: solid 1px;"><p>7050</p></td>
+			</tr>
+			<tr>
+				<td style="border: solid 1px;"><p>예시2</p></td>
+				<td style="border: solid 1px;"><p>입고완료</p></td>
+				<td style="border: solid 1px;"><p>2024518</p></td>
+				<td style="border: solid 1px;"><p>20240524</p></td>
+				<td style="border: solid 1px;"><p>LG</p></td>
+				<td style="border: solid 1px;"><p>2</p></td>
+				<td style="border: solid 1px;"><p>254</p></td>
+				<td style="border: solid 1px;"><p>700</p></td>
+			</tr>
+		</table>
+	</div>
+
 </body>
 </html>

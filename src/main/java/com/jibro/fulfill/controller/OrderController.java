@@ -1,37 +1,30 @@
 package com.jibro.fulfill.controller;
 
-import com.jibro.fulfill.dto.OrderResponseDto;
-import com.jibro.fulfill.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import com.jibro.fulfill.dto.order.OrderListResponseDto;
+import com.jibro.fulfill.service.OrderService;
 
 @Controller
+@RequestMapping("/order")
 public class OrderController {
+	@Autowired
+	private OrderService orderService;
 
-    private final OrderService orderService;
+	// 상품 목록 리스트
+	@GetMapping(value = { "/orderList" })
+	public void getOrderList(Model model, @RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
+		
+		Page<OrderListResponseDto> orderPage = orderService.getOrders(page, size);
 
-    @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+		model.addAttribute("orderPage", orderPage);
 
-/*    @GetMapping(value = "/order/list")
-    public ModelAndView getOrderList(){
-        ModelAndView mav = new ModelAndView();
+	}
 
-        List<OrderResponseDto> orderList = this.orderService.getOrderList();
-
-        mav.setViewName("/order/list");
-        return mav;
-    }*/
-
-    @GetMapping(value = "/order/list")
-    public ResponseEntity<List<OrderResponseDto>> getOrderList(){
-        return this.orderService.getOrderList();
-    }
 }

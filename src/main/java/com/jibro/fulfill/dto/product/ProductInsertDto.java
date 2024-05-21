@@ -28,4 +28,7 @@ public class ProductInsertDto {
 	
 	@NonNull
 	private Company maker;	
+	
+	private String maker_id;
+	
 }

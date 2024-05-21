@@ -1,10 +1,12 @@
 package com.jibro.fulfill.service;
 
-import com.jibro.fulfill.dto.product.ProductStockDto;
-import com.jibro.fulfill.entity.Incoming;
-
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import com.jibro.fulfill.dto.stock.StockListResponseDto;
+import com.jibro.fulfill.dto.stock.StockUpdateResponseDto;
 
 public interface StockService {
-   public List<ProductStockDto> allStock(Incoming incoming) throws Exception;
+	List<StockListResponseDto> stockList() throws Exception;
+	void stockUpdate(StockUpdateResponseDto stockUpdateResponseDto) throws NoSuchElementException;
 }

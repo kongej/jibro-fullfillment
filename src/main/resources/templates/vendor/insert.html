@@ -1,8 +1,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>상품 목록 추가</title>
+<title>신규 거래처 추가</title>
+<meta charset="UTF-8">
 </head>
 <body>
-
+	<h1>신규 거래처 등록</h1>
+ 	<form method="post" action="/vendor/insert" id="vendorForm">
+ 		<p>거래처 코드 <input type="text" name="companyId" id="companyId" placeholder="작성규칙)D/M + 거래처 첫 이니셜 + 순번" required/></p>
+ 		<p>거래처명 <input type="text" name="companyName" placeholder="거래처명을 입력하세요" required/></p>
+ 		<p>이메일 <input type="email" name="companyEmail" placeholer="이메일을 입력하세요" required/></p>
+ 		<p>연락처 <input type="text" name="companyContact" placeholder="연락처를 입력하세요" alt="-"/></p>
+ 		<p>
+ 		   분류
+	 		<select name="companyCategory" id="companyCategory">
+			    <option value="D">택배사</option>
+			    <option value="M">제조사</option>
+			</select>
+		</p>
+ 		<p>
+ 			<input type="submit" value="등록"/>
+ 			<input type="reset" value="초기화"/>
+ 			<input type="button" value="목록" onclick="location.href='/vendor/list'"/>
+ 		</p>
+ 	</form>
+ 	<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('vendorForm');
+            var categorySelect = document.getElementById('companyCategory');
+            var companyIdInput = document.getElementById('companyId');
+            
+            form.addEventListener('submit', function (event) {
+                var selectedCategory = categorySelect.value;
+                var companyIdValue = companyIdInput.value.trim();
+                
+                // 선택된 카테고리에 따라 companyId 값을 설정
+                if (selectedCategory === 'D') {
+                    if (!companyIdValue.startsWith('D')) {
+                        alert('택배사를 선택하셨으므로 거래처 코드는 "D"로 시작해야 합니다.');
+                        event.preventDefault(); // 폼 제출을 막습니다.
+                    }
+                } else if (selectedCategory === 'M') {
+                    if (!companyIdValue.startsWith('M')) {
+                        alert('제조사를 선택하셨으므로 거래처 코드는 "M"으로 시작해야 합니다.');
+                        event.preventDefault(); // 폼 제출을 막습니다.
+                    }
+                }
+            });
+        });
+	</script>
 </body>
 </html>

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,7 +17,6 @@ import com.jibro.fulfill.dto.product.ProductModDto;
 import com.jibro.fulfill.dto.product.ProductModResponseDto;
 import com.jibro.fulfill.dto.product.ProductReadResponseDto;
 import com.jibro.fulfill.entity.Product;
-import com.jibro.fulfill.repository.CompanyRepository;
 import com.jibro.fulfill.repository.ProductRepository;
 import com.jibro.fulfill.service.ProductService;
 
@@ -30,10 +28,8 @@ public class ProductServiceImpl implements ProductService{
 		this.productRepository = productRepository;
 	}
 	
-//	@Autowired
-//	private CompanyRepository companyRepository;
-	
 	//list
+	@Override
 	public List<ProductListResponseDto> productList(String productName, Integer page){
 		
 		final int pageSize = 10;
@@ -67,6 +63,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	// insert
+	@Override
 	public String insert(ProductInsertDto productInsertDto) {
 		
 //		if(!companyRepository.existsById(productInsertDto.getMaker())) {
@@ -89,6 +86,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	//read
+	@Override
 	public ProductReadResponseDto read(String productId) throws NoSuchElementException{
 		Product product = this.productRepository.findById(productId).orElseThrow();
 		ProductReadResponseDto productReadResponseDto = new ProductReadResponseDto();
@@ -98,6 +96,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	//mod_list
+	@Override
 	public ProductModResponseDto edit(String productId) throws NoSuchElementException{
 		Product product = this.productRepository.findById(productId).orElseThrow();
 		
@@ -105,6 +104,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	//mod
+	@Override
 	public void update(ProductModDto productModDto) throws NoSuchElementException{
 		Product product = this.productRepository.findById(productModDto.getProductId()).orElseThrow();
 		product = productModDto.fill(product);
@@ -112,6 +112,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	// delete
+	@Override
 	public void delete(String productId) throws NoSuchElementException{
 		Product product = this.productRepository.findById(productId).orElseThrow();
 		this.productRepository.delete(product);

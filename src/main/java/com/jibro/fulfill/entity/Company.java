@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
@@ -35,4 +37,12 @@ public class Company extends BaseEntity{
 
 	@Column(length = 1, nullable = false)
 	private String companyCategory;		//거래처카테고리 판매자 : S / 제조사 : M / 택배사 : D
+
+	public Company(String companyId, String companyName, String companyEmail, String companyContact, String companyCategory) {
+		this.companyId = companyId;
+		this.companyName = companyName;
+		this.companyEmail = companyEmail;
+		this.companyContact = companyContact;
+		this.companyCategory = companyCategory;
+	}
 }
