@@ -28,7 +28,10 @@ public class OrderSpecification {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("orderDate"), toDate));
             }
 
-            query.orderBy(criteriaBuilder.desc(root.get("orderDate")));
+            query.orderBy(
+                    criteriaBuilder.asc(root.get("orderStatus")),
+                    criteriaBuilder.desc(root.get("orderDate"))
+                );
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
