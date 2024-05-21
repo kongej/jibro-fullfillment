@@ -23,7 +23,12 @@
 	<h1>재고 관리</h1>
 
 	<div align="right" style="width: 1020px;">
-	<input type="text" ><button>검색</button>
+	<form action="">
+		<input th:if="${productId}" type="text" th:name="productId" th:value="${productId}">
+		<input th:if="!${productId}" type="text" th:name="productId" >
+		<input type="submit" th:value="검색">
+	</form>
+	
 	</div>
 	
 	<div class="list_container">

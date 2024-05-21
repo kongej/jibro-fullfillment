@@ -17,9 +17,9 @@ public class StockUpdateResponseDto {
 	@Positive
 	private Integer safetyStock;
 	
-	public Product fill(Product product) {
-		product.setProductId(this.productId);
+	public Product safetyStockUpdate(Product product) {
 		product.setSafetyStock(this.safetyStock);
 		return product;
 	}
+
 }
