@@ -20,7 +20,7 @@ public class IncomingServiceImpl implements IncomingService {
         this.productRepository = productRepository;
     }
     @Override
-    public ProductOrderDto insert(ProductOrderDto productOrderDto) throws Exception {
+    public String insert(ProductOrderDto productOrderDto) throws Exception {
         Product product = productRepository.findById(productOrderDto.getProduct_id())
                 .orElseThrow(() -> new Exception("product_id 확인 불가"));
 
@@ -28,8 +28,9 @@ public class IncomingServiceImpl implements IncomingService {
                 .product(product)
                 .incomingCount(Integer.parseInt(productOrderDto.getIncoming_quantity()))
                 .build();
-        this.incomingRepository.save(incoming);
+        incoming = this.incomingRepository.save(incoming);
 
-        return productOrderDto;
+        return incoming.getIncomingId();
     }
+
 }

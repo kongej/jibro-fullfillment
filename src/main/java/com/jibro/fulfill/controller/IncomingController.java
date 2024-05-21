@@ -1,4 +1,6 @@
+/*
 package com.jibro.fulfill.controller;
+import com.jibro.fulfill.entity.Incoming;
 import com.jibro.fulfill.service.ApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class IncomingController {
-    private IncomingService incomingServic;
+    private IncomingService incomingService;
     private ApiService apiService;
+
     @Autowired
     public IncomingController(IncomingService incomingService, ApiService apiService){
-        this.incomingServic = incomingService;
+        this.incomingService = incomingService;
         this.apiService = apiService;
     }
 
     @PostMapping(value = "/incoming/form")
     public ModelAndView insert(ProductOrderDto productOrderDto) throws Exception {
-        incomingServic.insert(productOrderDto);
-        apiService.productOrder(productOrderDto.getProduct_id());
+        String incoming_id = incomingService.insert(productOrderDto);
+        System.out.println(productOrderDto.getProduct_id());
+        System.out.println(incoming_id);
+        apiService.productOrder(incoming_id);
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/incoming/list");
         return mav;
@@ -43,3 +48,4 @@ public class IncomingController {
     }
 
 }
+*/

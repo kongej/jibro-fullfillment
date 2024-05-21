@@ -30,7 +30,7 @@ public class Incoming extends BaseEntity{
 	@Column(length = 50, nullable = false)
 	private Integer incomingCount;			//입고수량
 	
-	@Column(length = 50, nullable = false)
+	@Column(length = 50, nullable = true)
 	private Integer total;					//총가격
 
 	@ManyToOne
