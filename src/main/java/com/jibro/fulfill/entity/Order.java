@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -62,7 +64,8 @@ public class Order {
     @Column(nullable = false)
     private LocalDateTime updatedDate;
 	
-	public Order(String orderId, Product product, String ordererName, String phoneNum, String address, Integer count, Company seller) {
+	@Builder
+	public Order(String orderId, Product product, String ordererName, String phoneNum, String address, Integer count, Company seller, LocalDateTime orderDate) {
 		this.orderId = orderId;
 		this.product = product;
 		this.ordererName = ordererName;
@@ -71,5 +74,6 @@ public class Order {
 		this.count = count;
 		this.orderStatus = 0; // 기본값 설정
 		this.seller = seller;
+		this.orderDate = orderDate;
 	}
 }
