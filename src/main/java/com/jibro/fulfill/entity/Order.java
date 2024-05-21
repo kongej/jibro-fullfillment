@@ -56,7 +56,7 @@ public class Order {
 	private Company seller; // 판매자
 	
 	@Column(nullable = false)
-	private LocalDateTime orderedDate; // 주문날짜
+	private LocalDateTime orderDate; // 주문날짜
 	
 	@LastModifiedDate
     @Column(nullable = false)
