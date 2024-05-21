@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jibro.fulfill.dto.incoming.IncomingInsertDto;
 import com.jibro.fulfill.dto.incoming.IncomingListResponseDto;
 import com.jibro.fulfill.service.IncomingService;
 
@@ -23,4 +25,11 @@ public class IncomingController {
 		mav.setViewName("incoming/list");
 		return mav;
 	}
+	
+	@PostMapping("incoming/insert")
+	public String incomingInsert(IncomingInsertDto incomingInsertDto) throws Exception{
+		this.incomingService.incomingInsert(incomingInsertDto);
+		return String.format("redirect:/incoming/list");
+	}
+	
 }

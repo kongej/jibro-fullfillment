@@ -6,9 +6,13 @@ import com.jibro.fulfill.entity.Company;
 import com.jibro.fulfill.entity.Product;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class StockListResponseDto {
 	//제품번호
 	@NonNull
@@ -16,6 +20,10 @@ public class StockListResponseDto {
 	//제품명
 	@NonNull
 	private String productName;	
+	//가격
+	@NonNull
+	@Positive
+	private Integer cost;
 	//수량
 	@NonNull
 	@Positive
@@ -30,6 +38,7 @@ public class StockListResponseDto {
 	public StockListResponseDto(Product product) {
 		this.productId = product.getProductId();
 		this.productName = product.getProductName();
+		this.cost = product.getCost();
 		this.stockCount = product.getStockCount();
 		this.safetyStock = product.getSafetyStock();
 		this.maker = product.getMaker();

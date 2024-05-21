@@ -30,9 +30,17 @@ public class StockController {
 	@PostMapping("stock/update")
 	public ModelAndView stockUpdate(@Validated StockUpdateResponseDto stockUpdateResponseDto) {
 		ModelAndView mav = new ModelAndView();
+		System.out.println("id: "+ stockUpdateResponseDto.getProductId());
 		this.stockService.stockUpdate(stockUpdateResponseDto);
 		mav.setViewName(String.format("redirect:/stock/list"));
 		return mav; 
 	}
 	
+	@PostMapping("incoming/insertForm") 
+	public ModelAndView insertForm(@Validated StockListResponseDto stockListResponseDto) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("insertData", stockListResponseDto);
+		mav.setViewName("incoming/insertForm");
+		return mav;
+	}
 }

@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "incomings")
@@ -36,12 +40,15 @@ public class Incoming extends BaseEntity{
 	@Column(length = 50, nullable = false)
 	private Integer total;					//총가격	
 	
-	@Column(length = 1, nullable = false, columnDefinition = "int default 1")
-	private Integer orderStatus;		//상태 1:입고 대기 2:입고 완료
+	@Column(length = 1, nullable = false, columnDefinition = "int default 0")
+	@Builder.Default
+	private Integer orderStatus=0;		//상태 0:입고 대기 1:입고 완료
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	@ToString.Exclude
 	private Product product;				//제품
+	
+	
 	
 }

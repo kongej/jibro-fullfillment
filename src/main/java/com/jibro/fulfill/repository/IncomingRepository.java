@@ -7,5 +7,4 @@ import com.jibro.fulfill.entity.Incoming;
 
 @Repository
 public interface IncomingRepository extends JpaRepository<Incoming, String> {
-
 }
