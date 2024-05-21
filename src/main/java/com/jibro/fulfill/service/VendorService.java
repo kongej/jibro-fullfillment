@@ -14,4 +14,7 @@ public interface VendorService {
 	VendorModResponsetDto edit(String companyId) throws NoSuchElementException;
 	void update(VendorModDto vendorModDto) throws NoSuchElementException;
 	void delete(String companyId) throws NoSuchElementException; 
+	List<VendorListResponseDto> makerList();
+	
+	//boolean duplicate(String companyId);
 }
