@@ -1,4 +1,4 @@
-package com.jibro.fulfill.dto.order;
+package com.jibro.fulfill.dto.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,8 +2,11 @@ package com.jibro.fulfill.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+import com.jibro.fulfill.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,12 +22,15 @@ import com.jibro.fulfill.entity.Product;
 import com.jibro.fulfill.repository.ProductRepository;
 import com.jibro.fulfill.service.StockService;
 
+
 @Service
 public class StockServiceImpl implements StockService {
 	private ProductRepository productRepository;
+	private OrderRepository orderRepository;
 	
-	public StockServiceImpl(ProductRepository productRepository) {
+	public StockServiceImpl(ProductRepository productRepository, OrderRepository orderRepository) {
 		this.productRepository = productRepository;
+		this.orderRepository = orderRepository;
 	}
 	
 	@Override
@@ -62,12 +68,13 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public void stockUpdate(String searchId, Integer count) throws NoSuchElementException {
-		Product product = this.productRepository.findById(searchId).orElseThrow();
-		product.setStockCount(product.getStockCount()-count);
+	public void stockUpdate(String orderId) throws NoSuchElementException {
+		Optional<com.jibro.fulfill.entity.Order> orderResponse = this.orderRepository.findById(orderId);
+
+		Product product = this.productRepository.findById(orderResponse.get().getProduct().getProductId()).orElseThrow();
+		product.setStockCount(product.getStockCount()-orderResponse.get().getCount());
+
 		this.productRepository.save(product);
 	}
-	
-	
 
 }

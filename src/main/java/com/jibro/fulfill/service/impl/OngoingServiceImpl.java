@@ -31,7 +31,7 @@ public class OngoingServiceImpl implements OngoingService {
 	
 	@Autowired
 	CompanyRepository companyRepository;
-	
+
 	public OngoingServiceImpl(OngoingRepository ongoingRepository) {
 		this.ongoingRepository = ongoingRepository;
 	}
