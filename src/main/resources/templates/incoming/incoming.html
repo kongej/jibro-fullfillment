@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/incoming/form}" method="post">
+        <input type="text" name="product_id">
+        <input type="number" name="incoming_quantity">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
