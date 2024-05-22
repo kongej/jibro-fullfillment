@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jibro.fulfill.dto.ongoing.OngoingListPageDto;
 import com.jibro.fulfill.dto.ongoing.OngoingListResponseDto;
 import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.service.OngoingService;
@@ -20,23 +21,30 @@ public class OngoingController {
 	StockService stockService;
 	
 	@GetMapping("ongoing/list")
-	public ModelAndView ongoingList() throws Exception{
+	public ModelAndView ongoingList(String searchId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		List<OngoingListResponseDto> ongoingList = this.ongoingService.ongoingList();
-		mav.addObject("ongoingList",ongoingList);
+		if (page == null) page=1;
+		
+		OngoingListPageDto ongoingList = this.ongoingService.ongoingList(searchId, page);
+		mav.addObject("ongoingList",ongoingList.getOngoings());
+		mav.addObject("lastPage", ongoingList.isLastPage());
+		mav.addObject("totalPage", ongoingList.getTotalPage());
+		
+		mav.addObject("searchId", searchId);
+		mav.addObject("page", page);
 		mav.setViewName("ongoing/list");
 		return mav;
 	}
 	
-	@GetMapping("ongoing/insert")
-	public void ongoingInsert() throws Exception{
-		
-		String orderId = "ORDER002";
-		Ongoing ongingData = this.ongoingService.ongoingInsert(orderId);
-
-		String productId = ongingData.getOrder().getProduct().getProductId();
-		Integer count = ongingData.getOrder().getCount();
-		this.stockService.stockUpdate(productId,count);
-
-	}
+//	@GetMapping("ongoing/insert")
+//	public void ongoingInsert() throws Exception{
+//
+//		String orderId = "ORDER002";
+//		Ongoing ongingData = this.ongoingService.ongoingInsert(orderId);
+//
+//		String productId = ongingData.getOrder().getProduct().getProductId();
+//		Integer count = ongingData.getOrder().getCount();
+//		this.stockService.stockUpdate(productId,count);
+//
+//	}
 }

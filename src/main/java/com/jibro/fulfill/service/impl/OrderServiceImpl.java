@@ -1,14 +1,20 @@
 package com.jibro.fulfill.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.jibro.fulfill.dto.order.OrderListRequestDto;
 import com.jibro.fulfill.dto.order.OrderListResponseDto;
 import com.jibro.fulfill.dto.order.OrderReceiveAPIDto;
+import com.jibro.fulfill.dto.order.OrderSendAPIDto;
 import com.jibro.fulfill.entity.Company;
 import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.entity.Order;
@@ -20,7 +26,10 @@ import com.jibro.fulfill.service.OngoingService;
 import com.jibro.fulfill.service.OrderService;
 import com.jibro.fulfill.specification.OrderSpecification;
 
+import reactor.core.publisher.Mono;
+
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
@@ -68,21 +77,45 @@ public class OrderServiceImpl implements OrderService{
 
 
 	@Override
-	public void doOngoing(String orderId) throws Exception{
+	public int doOngoing(String orderId) throws Exception{
 		
 		Ongoing ongoing = ongoingService.ongoingInsert(orderId);
-		
 		Order order = orderRepository.getById(orderId);
-		order.setOrderStatus(1);
 		
-		order = orderRepository.save(order);
+		// api 요청을 풀필먼트 컨트롤러 측에 전달
+		WebClient webClient = WebClient.builder()
+				.baseUrl("http://localhost:9002")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+
+		OrderSendAPIDto orderSendApiDto = new OrderSendAPIDto();
+		orderSendApiDto.setOrderId(orderId);
+		orderSendApiDto.setStatus(1);
+		orderSendApiDto.setInvc(ongoing.getInvc());
 		
-		String invc = order.getOngoing().getInvc();
-		System.out.println(order.toString());
-		System.out.println("invc 송장번호 : " + invc);
+		
+		webClient.put().uri(uriBuilder -> uriBuilder.path("/order/update/delivery")
+						.build())
+				.bodyValue(orderSendApiDto)
+				.exchangeToMono(clientResponse -> {
+					if(clientResponse.statusCode().is2xxSuccessful()){
+						System.out.println("데이터 전송 성공");
+						order.setOrderStatus(1);
+						return Mono.defer(()-> {
+							orderRepository.save(order);
+							return Mono.just("success");
+						});
+					}else {
+						System.out.println("데이터 전송 실패");
+						return Mono.just("fail");
+					}
+				})
+				.block();
 		
 		
-		//여기다가 api 하시면 되요
+		return order.getOrderStatus();
 	}
+
+
 
 }

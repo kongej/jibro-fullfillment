@@ -18,7 +18,7 @@ public class OngoingInsertDto {
 	
 	//지울지도
 	@NonNull
-	private Long invc;
+	private Integer invc;
 	
 	@NonNull
 	private Company delever;

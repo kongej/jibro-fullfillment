@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.jibro.fulfill.dto.ongoing.OngoingListPageDto;
 import com.jibro.fulfill.dto.ongoing.OngoingListResponseDto;
 import com.jibro.fulfill.entity.Company;
 import com.jibro.fulfill.entity.Ongoing;
@@ -26,16 +31,29 @@ public class OngoingServiceImpl implements OngoingService {
 	
 	@Autowired
 	CompanyRepository companyRepository;
-	
+
 	public OngoingServiceImpl(OngoingRepository ongoingRepository) {
 		this.ongoingRepository = ongoingRepository;
 	}
 
 	@Override
-	public List<OngoingListResponseDto> ongoingList() throws Exception {
-		List<Ongoing> ongoings;
-		ongoings = this.ongoingRepository.findAll();
-		return ongoings.stream().map(ongoing-> new OngoingListResponseDto(ongoing)).collect(Collectors.toList());
+	public OngoingListPageDto ongoingList(String searchId, Integer page) throws Exception {
+		final Integer pageSize = 10;
+		
+		page -= 1;
+		
+		Pageable pageable = PageRequest.of(page, pageSize, Direction.DESC, "createdAt");
+		Page<Ongoing> ongoingPage;
+		
+		if (searchId == null || searchId.trim() == "") {
+			ongoingPage = this.ongoingRepository.findAll(pageable);
+		}else {
+			ongoingPage = this.ongoingRepository.findByOngoingIdContains(searchId, pageable);
+		}
+		
+		List<Ongoing> ongoings = ongoingPage.getContent();
+		List<OngoingListResponseDto> response = ongoings.stream().map(ongoing-> new OngoingListResponseDto(ongoing)).collect(Collectors.toList());
+		return new OngoingListPageDto(response, ongoingPage.isLast(), ongoingPage.getTotalPages());
 	}
 
 	@Override
@@ -44,8 +62,8 @@ public class OngoingServiceImpl implements OngoingService {
 		String deliverId = "DA003";
 		Company deliver = companyRepository.getById(deliverId);
 		
-		int length = 16; 
-        String invc = generateRandomInvc(length);
+		int length = 6; 
+        Integer invc = generateRandomInvc(length);
         System.out.println("Generated Invoice Number: " + invc);
 		
 		Ongoing ongoing = Ongoing.builder()
@@ -58,7 +76,7 @@ public class OngoingServiceImpl implements OngoingService {
 		return ongoing;
 	}
 	
-	 public static String generateRandomInvc(int length) {
+	private Integer generateRandomInvc(int length) {
 		 	String DIGITS = "0123456789";
 		    SecureRandom random = new SecureRandom();
 		    
@@ -70,7 +88,7 @@ public class OngoingServiceImpl implements OngoingService {
 	        for (int i = 0; i < length; i++) {
 	            sb.append(DIGITS.charAt(random.nextInt(DIGITS.length())));
 	        }
-	        return sb.toString();
+	        return Integer.parseInt("6" + sb.toString());
 	  }
 
 

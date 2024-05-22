@@ -73,7 +73,7 @@ public class OngoingRepositoryTest {
         order = orderRepository.save(order);
         
         Ongoing ongoing = new Ongoing();
-        ongoing.setInvc("221141");
+        ongoing.setInvc(221141);
         ongoing.setOrder(order);
         ongoing.setDelever(delever);
 
