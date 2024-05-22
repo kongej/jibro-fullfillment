@@ -44,7 +44,7 @@ public class OngoingServiceImpl implements OngoingService {
 		String deliverId = "DA003";
 		Company deliver = companyRepository.getById(deliverId);
 		
-		int length = 10; 
+		int length = 8; 
         Integer invc = generateRandomInvc(length);
         System.out.println("Generated Invoice Number: " + invc);
 		
