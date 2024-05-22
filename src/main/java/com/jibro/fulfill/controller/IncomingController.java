@@ -1,7 +1,5 @@
 package com.jibro.fulfill.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jibro.fulfill.dto.incoming.IncomingInsertDto;
-import com.jibro.fulfill.dto.incoming.IncomingListResponseDto;
+import com.jibro.fulfill.dto.incoming.IncomingListPageDto;
 import com.jibro.fulfill.service.IncomingService;
 
 @Controller
@@ -18,11 +16,19 @@ public class IncomingController {
 	IncomingService incomingService;
 	
 	@GetMapping("incoming/list")
-	public ModelAndView incomingList() throws Exception{
+	public ModelAndView incomingList(String searchId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		List<IncomingListResponseDto> incomingList = this.incomingService.incomingList();
-		mav.addObject("incomingList",incomingList);
+		if (page == null) page=1;
+		
+		IncomingListPageDto incomingList = this.incomingService.incomingList(searchId, page);
+		mav.addObject("incomingList",incomingList.getIncomings());
+		mav.addObject("lastPage", incomingList.isLastPage());
+		mav.addObject("totalPage", incomingList.getTotalPage());
+		
+		mav.addObject("searchId", searchId);
+		mav.addObject("page", page);
 		mav.setViewName("incoming/list");
+		
 		return mav;
 	}
 	

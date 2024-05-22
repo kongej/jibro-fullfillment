@@ -1,7 +1,5 @@
 package com.jibro.fulfill.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -9,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jibro.fulfill.dto.stock.StockListPageDto;
 import com.jibro.fulfill.dto.stock.StockListResponseDto;
 import com.jibro.fulfill.dto.stock.StockUpdateResponseDto;
 import com.jibro.fulfill.service.StockService;
@@ -19,20 +18,26 @@ public class StockController {
 	private StockService stockService;
 	
 	@GetMapping("stock/list")
-	public ModelAndView stockList(String productId, Integer page) throws Exception{
+	public ModelAndView stockList(String searchId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		List<StockListResponseDto> stockList = this.stockService.stockList(productId, page);
-		mav.addObject("stockList",stockList);
-		mav.addObject("productId",productId);
+		if (page == null) page=1;
+		
+		StockListPageDto  stockList = this.stockService.stockList(searchId, page);
+		mav.addObject("stockList", stockList.getStocks());
+		mav.addObject("lastPage", stockList.isLastPage());
+		mav.addObject("totalPage", stockList.getTotalPage());
+		
+		mav.addObject("searchId", searchId);
+		mav.addObject("page", page);
 		mav.setViewName("stock/list");
 		return mav;
 	}
 	
 	@PostMapping("stock/update")
-	public ModelAndView stockUpdate(@Validated StockUpdateResponseDto stockUpdateResponseDto) {
+	public ModelAndView stockUpdate(@Validated StockUpdateResponseDto stockUpdateResponseDto, String searchId, Integer page) {
 		ModelAndView mav = new ModelAndView();
 		this.stockService.safetystockUpdate(stockUpdateResponseDto);
-		mav.setViewName(String.format("redirect:/stock/list"));
+		mav.setViewName(String.format("redirect:/stock/list?searchId="+searchId+"&page="+page));
 		return mav; 
 	}
 	

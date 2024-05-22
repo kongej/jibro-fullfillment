@@ -23,16 +23,16 @@
 	<h1>재고 관리</h1>
 
 	<div align="right" style="width: 1020px;">
-	<form action="">
-		<input th:if="${productId}" type="text" th:name="productId" th:value="${productId}">
-		<input th:if="!${productId}" type="text" th:name="productId" >
+	<form th:action="@{/stock/list}" method="get">
+		<input th:if="${searchId}" type="text" th:name="searchId" th:value="${searchId}">
+		<input th:if="!${searchId}" type="text" th:name="searchId" >
 		<input type="submit" th:value="검색">
 	</form>
 	
 	</div>
 	
 	<div class="list_container">
-		<table style="width: 1020px; border: solid 1px; border-collapse: collapse; text-align: center;">
+		<table style="width: 1020px; border-collapse: collapse; text-align: center;">
 			<tr style="border: solid 1px;">
 				<td style="border: solid 1px;"></td>
 				<td style="border: solid 1px;"><p>제품번호</p></td>
@@ -44,7 +44,7 @@
 			</tr>
 			<tr th:each="stockList : ${stockList}">
 				
-					<td style="border: solid 1px;"><p th:text="${stockListStat.count}" ></p></td>
+					<td style="border: solid 1px;"><p th:text="${stockListStat.count+(page-1)*10}" ></p></td>
 					<td style="border: solid 1px;"><p th:text="${stockList.productId}" ></p></td>
 					<td style="border: solid 1px;"><p th:text="${stockList.productName}" ></p></td>
 					<td style="border: solid 1px;"><p th:text="${stockList.cost}" ></p></td>
@@ -60,6 +60,8 @@
 					</td>
 					<td style="border: solid 1px;">
 						<form th:action="@{/stock/update}" method="post">
+							<input type="hidden" th:name="page" th:value="${page}">
+							<input type="hidden" th:name="searchId" th:value="${searchId}">
 							<input type="hidden" th:name="productId" th:value="${stockList.productId}">
 							<input type="number" name="safetyStock" th:value="${stockList.safetyStock}" min=0 step=1 style="text-align:center; width: 50px;">
 							<input type="submit" value="수정" style="width: 40px;">
@@ -67,12 +69,20 @@
 					</td>
 					<td style="border: solid 1px;"><p th:text="${stockList.maker.companyId}" ></p></td>	
 			</tr>
-			<tr th:if="!${stockList}">
-				<td colspan="7" ><p>저장된 데이터가 없습니다.</p></td>
+			<tr th:if="!${#lists.size(stockList)}">
+				<td colspan="7" style="border: solid 1px;"><p>데이터가 없습니다.</p></td>
+			</tr>
+			<tr th:if="${totalPage > 1}" >
+				<td colspan="7" >
+					<p th:each="index : ${#numbers.sequence(1, totalPage)}">
+						<a th:text="${index}" th:href="@{/stock/list?searchId={id}&page={count}(id=${searchId}, count=${indexStat.count})}"></a>
+					</p>
+				</td>
 			</tr>
 		</table>
 	</div>
 	
-
+	
+		
 </body>
 </html>
