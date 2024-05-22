@@ -45,8 +45,8 @@
 					<option value="searchProductId" >제품번호</option>
 					<option value="searchCompanyId" >거래처</option>
 				</select>
-				<input th:if="${searchId}" type="text" th:name="searchId" th:value="${searchId}" />
-				<input th:if="!${searchId}" type="text" th:name="searchId" />
+				<input th:if="${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" th:value="${searchId}" />
+				<input th:if="!${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" />
 				<input type="submit" th:value="검색" class="btn btn-primary" />
 			</div>
 		</div>

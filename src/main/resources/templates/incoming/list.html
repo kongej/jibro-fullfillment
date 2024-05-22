@@ -39,13 +39,19 @@
 				<div class="table-responsive">
 				<form th:action="@{/incoming/list}" method="get">
 					<div class="row mt-3">
+						<div class="col" style="text-align: left;">
+							<input type="date" class="form-control" style="display: inline-block; width:140px;">
+							<span th:text="| ~ |"></span>
+							<input type="date" class="form-control" style="display: inline-block; width:140px;">
+							<input type="submit" th:value="검색" class="btn btn-primary" />
+						</div>
 						<div class="col" style="text-align: right;">
 							<select id="comboBox" name="searchType" class="form-select" style="display: inline-block; width:auto;">
 								<option value="searchIncomingId" >입고번호</option>
 								<option value="searchProductId" >제품번호</option>
 							</select>
-							<input th:if="${searchId}" type="text" th:name="searchId" th:value="${searchId}"/>
-							<input th:if="!${searchId}" type="text" th:name="searchId" />
+							<input th:if="${searchId}" class="form-control" style="display: inline-block; width:250px;"  type="text" th:name="searchId" th:value="${searchId}"/>
+							<input th:if="!${searchId}" class="form-control" style="display: inline-block; width:250px;" type="text" th:name="searchId" />
 							<input type="submit" th:value="검색" class="btn btn-primary" />
 						</div>
 					</div>
