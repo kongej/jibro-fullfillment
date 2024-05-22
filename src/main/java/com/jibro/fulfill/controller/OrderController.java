@@ -56,17 +56,17 @@ public class OrderController {
     }
 	
 	@PostMapping("/ongoing")
-	public ResponseEntity<String> doOngoing(@RequestParam String orderId){
+	public ResponseEntity<String> doOngoing(@RequestParam String orderId) throws Exception{
 		
 		System.out.println("오더아이디 : " + orderId);
 		String resultMesage ="";
 		int status;
 		
-		try {
-			orderService.doOngoing(orderId);
+		int result = orderService.doOngoing(orderId);
+		if(result == 1)	{
 			resultMesage = "success";
 			status = 200;
-		} catch (Exception e) {
+		} else {
 			resultMesage = "fail";
 			status = 510;
 		}
