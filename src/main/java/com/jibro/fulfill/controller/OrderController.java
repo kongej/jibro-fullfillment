@@ -39,10 +39,10 @@ public class OrderController {
 		Page<OrderListResponseDto> orderPage = orderService.getOrders(dto, page - 1, size);
 		OrderResponseDto responseDto = new OrderResponseDto(orderPage, 10);
 		
-		OrderRequestDto requstDto = new OrderRequestDto(dto);
+		OrderRequestDto requestDto = new OrderRequestDto(dto);
 		
 		model.addAttribute("orderPage", responseDto);
-		model.addAttribute("requestDto", requstDto);
+		model.addAttribute("requestDto", requestDto);
 	}
 
 	@PostMapping("/receive-from-seller")

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -36,11 +37,10 @@ public class OrderResponseDto {
         this.next = this.end < totalPages;
     }
 
-    // Getters and setters
+	@Override
+	public String toString() {
+		return "OrderResponseDto [page=" + page + ", size=" + size + ", start=" + start + ", end=" + end + ", prev="
+				+ prev + ", next=" + next + ", pageBlock=" + pageBlock + ", content=" + content + "]";
+	}
 
-    @Override
-    public String toString() {
-        return "ResponseDTO [page=" + page + ", size=" + size + ", start=" + start + ", end=" + end
-                + ", prev=" + prev + ", next=" + next + ", content=" + content + "]";
-    }
 }

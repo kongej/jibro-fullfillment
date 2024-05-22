@@ -1,102 +1,112 @@
 package com.jibro.fulfill.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.jibro.fulfill.dto.sales.SalesSummaryRequestDto;
+import com.jibro.fulfill.dto.sales.SalesSummaryResponseDto;
+import com.jibro.fulfill.repository.CompanyRepository;
 import com.jibro.fulfill.repository.OrderRepository;
 import com.jibro.fulfill.service.SalesService;
 
 @Service
+@Transactional
 public class SalesServiceImpl implements SalesService{
-	private OrderRepository orderRepository;
 	
-	private SalesServiceImpl(OrderRepository orderRepository) {
-		this.orderRepository = orderRepository;
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private CompanyRepository companyRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+	
+	@Override
+	public Page<SalesSummaryResponseDto> getOrderSummaries(SalesSummaryRequestDto dto, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "orderDate"));
+		return orderRepository.findOrderSummaries(dto.getFrom(), dto.getTo(), pageable);
+	}
+
+	@Override
+	public void sendEmailClick(String email, LocalDateTime fromDate, LocalDateTime toDate) {
+		List<SalesSummaryResponseDto> sales = orderRepository.findOrderSummariesEmailContent(fromDate, toDate);
+		String[] emails = email.split(",");
+		String from = fromDate.toString().substring(0,10);
+		String to = toDate.toString().substring(0,10);
+		String subject = from + " ~ " +  to + " 매출 정보";
+		String text = makeEmailContent(sales, subject);
+		for(String toEmail: emails) {
+			toEmail = toEmail.trim();
+			sendEmail(toEmail, subject, text);
+		}
 	}
 	
-//	@Autowired
-//	private CompanyRepository companyRepository;
-	
-	//list
-//	public List<ProductListResponseDto> productList(String productName, Integer page){
-//		
-//		final int pageSize = 10;
-//		
-//		List<Product> products;
-//		
-//		if(page == null) {
-//			page = 0;
-//		}else {
-//			page -= 1;
-//		}
-//		
-//		if(productName == null) {
-//			Pageable pageable = PageRequest.of(page, pageSize, Direction.DESC, "productId");
-//			products = this.orderRepository.findAll(pageable).toList();
-//		}else {
-//			Pageable pageable = PageRequest.of(page, pageSize);
-//			Sort sort = Sort.by(Order.desc("created_At"));
-//			pageable.getSort().and(sort);
-//			products = this.productRepository.findByProductNameContains(productName, pageable);
-//		}
-//		
-//		
-//		//String productId, String productName, Integer cost, Integer safetyStock, 
-//		// Integer stockCount, Integer defectiveCount, 
-//		// String productImage, String maker
-//		return products.stream().map(product -> new ProductListResponseDto(
-//				product.getProductId(), product.getProductName(), product.getCost(),
-//				product.getSafetyStock(), product.getStockCount(), product.getDefectiveCount(),
-//			    product.getProductImage(), product.getMaker(), product.getMaker().getCompanyId())).collect(Collectors.toList());
-//	}
-//	
-//	// insert
-//	public String insert(ProductInsertDto productInsertDto) {
-//		
-////		if(!companyRepository.existsById(productInsertDto.getMaker())) {
-////			throw new IllegalArgumentException("관련 거래처는 존재하지 않습니다.");
-////		}
-//		
-//		Product product = Product.builder()
-//				.productId(productInsertDto.getProductId())
-//				.productName(productInsertDto.getProductName())
-//				.cost(productInsertDto.getCost())
-//				.safetyStock(productInsertDto.getSafetyStock())
-//				.stockCount(productInsertDto.getStockCount())
-//				.defectiveCount(productInsertDto.getDefectiveCount())
-//				.productImage(productInsertDto.getProductImage())
-//				.maker(productInsertDto.getMaker())
-//				.build();
-//		
-//		this.productRepository.save(product);
-//		return product.getProductId();
-//	}
-//	
-//	//read
-//	public ProductReadResponseDto read(String productId) throws NoSuchElementException{
-//		Product product = this.productRepository.findById(productId).orElseThrow();
-//		ProductReadResponseDto productReadResponseDto = new ProductReadResponseDto();
-//		
-//		productReadResponseDto.fromProduct(product);		
-//		return productReadResponseDto;
-//	}
-//	
-//	//mod_list
-//	public ProductModResponseDto edit(String productId) throws NoSuchElementException{
-//		Product product = this.productRepository.findById(productId).orElseThrow();
-//		
-//		return ProductModResponseDto.ProductFactory(product);
-//	}
-//	
-//	//mod
-//	public void update(ProductModDto productModDto) throws NoSuchElementException{
-//		Product product = this.productRepository.findById(productModDto.getProductId()).orElseThrow();
-//		product = productModDto.fill(product);
-//		this.productRepository.save(product);
-//	}
-//	
-//	// delete
-//	public void delete(String productId) throws NoSuchElementException{
-//		Product product = this.productRepository.findById(productId).orElseThrow();
-//		this.productRepository.delete(product);
-//	}
+	//@Scheduled(cron = "0 0 0 1 * *") // 매달 1일 00:00:00에 실행
+//    @Scheduled(cron = "0 * * * * *") 
+    public void sendMonthlyEmail() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime from = now.withDayOfMonth(1).minusMonths(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime to = now.withDayOfMonth(1).minusDays(1).withHour(23).withMinute(59).withSecond(59).withNano(999);
+        
+        List<SalesSummaryResponseDto> sales = orderRepository.findOrderSummariesEmailContent(from, to);
+        
+        String lastMonth = String.format("%02d월", LocalDate.now().minusMonths(1).getMonthValue());
+        String subject = lastMonth + " 매출 정보";
+
+		String text = makeEmailContent(sales, subject);
+    	// 이메일 전송 로직을 여기에 추가
+    	List<String> emailList = companyRepository.findCompanyEmailsByCategory();
+    	for(String toEmail: emailList) {
+			sendEmail(toEmail, subject, text);
+		}
+    			
+    }
+    
+    private String makeEmailContent(List<SalesSummaryResponseDto> salesList, String subject) {
+    	
+    	String emailTemplate = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>table th, table td {text-align: center; vertical-align: middle;}</style></head><body><p>안녕하세요. Jibro Fulfillment 입니다</p><p>";
+    	emailTemplate += subject;
+    	emailTemplate += " 매출 정보 입니다.</p><table style=\"width:400px\"><thead><tr><th>제품코드</th><th>날짜</th><th>매출수량</th></tr></thead><tbody>";
+        
+        for (SalesSummaryResponseDto sale : salesList) {
+            emailTemplate += "<tr><td>" + sale.getProduct().getProductId() + "</td><td>" + sale.getOrderDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "</td><td>" + sale.getTotalCount() + "</td></tr>";
+        }
+        
+        emailTemplate += "</tbody></table><p>감사합니다.</p></body></html>";
+        
+        return emailTemplate;
+    	
+	}
+
+	private void sendEmail(String to, String subject, String text) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        try {
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(text);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        javaMailSender.send(message);
+    }
 }
+	
+
