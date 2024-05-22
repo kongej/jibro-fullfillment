@@ -44,8 +44,8 @@ public class OngoingServiceImpl implements OngoingService {
 		String deliverId = "DA003";
 		Company deliver = companyRepository.getById(deliverId);
 		
-		int length = 16; 
-        String invc = generateRandomInvc(length);
+		int length = 10; 
+        Integer invc = generateRandomInvc(length);
         System.out.println("Generated Invoice Number: " + invc);
 		
 		Ongoing ongoing = Ongoing.builder()
@@ -58,7 +58,7 @@ public class OngoingServiceImpl implements OngoingService {
 		return ongoing;
 	}
 	
-	 public static String generateRandomInvc(int length) {
+	private Integer generateRandomInvc(int length) {
 		 	String DIGITS = "0123456789";
 		    SecureRandom random = new SecureRandom();
 		    
@@ -70,7 +70,7 @@ public class OngoingServiceImpl implements OngoingService {
 	        for (int i = 0; i < length; i++) {
 	            sb.append(DIGITS.charAt(random.nextInt(DIGITS.length())));
 	        }
-	        return sb.toString();
+	        return Integer.parseInt("6" + sb.toString());
 	  }
 
 

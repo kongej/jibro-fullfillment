@@ -41,7 +41,7 @@ public class Ongoing extends BaseEntity{
 	private Order order;				//주문
 
 	@Column(length = 50, nullable = false, unique = true)
-	private String invc;				//송장번호
+	private Integer invc;				//송장번호
 
 	@ManyToOne
 	@JoinColumn(name = "delever_id", nullable = false)
