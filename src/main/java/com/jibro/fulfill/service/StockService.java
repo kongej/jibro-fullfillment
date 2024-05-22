@@ -7,6 +7,7 @@ import com.jibro.fulfill.dto.stock.StockListResponseDto;
 import com.jibro.fulfill.dto.stock.StockUpdateResponseDto;
 
 public interface StockService {
-	List<StockListResponseDto> stockList() throws Exception;
-	void stockUpdate(StockUpdateResponseDto stockUpdateResponseDto) throws NoSuchElementException;
+	List<StockListResponseDto> stockList(String productId, Integer page) throws Exception;
+	void safetystockUpdate(StockUpdateResponseDto stockUpdateResponseDto) throws NoSuchElementException;
+	void stockUpdate(String productId, Integer count) throws NoSuchElementException;
 }

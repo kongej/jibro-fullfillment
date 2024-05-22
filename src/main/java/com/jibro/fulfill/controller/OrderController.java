@@ -18,7 +18,9 @@ import com.jibro.fulfill.dto.order.OrderListResponseDto;
 import com.jibro.fulfill.dto.order.OrderReceiveAPIDto;
 import com.jibro.fulfill.dto.order.OrderRequestDto;
 import com.jibro.fulfill.dto.order.OrderResponseDto;
+import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.entity.Order;
+import com.jibro.fulfill.service.OngoingService;
 import com.jibro.fulfill.service.OrderService;
 
 @Controller
@@ -26,6 +28,9 @@ import com.jibro.fulfill.service.OrderService;
 public class OrderController {
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private OngoingService ongoingService;
 
 	// 상품 목록 리스트
 	@GetMapping(value = { "/list" })
@@ -49,5 +54,23 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
         
     }
-
+	
+	@PostMapping("/ongoing")
+	public ResponseEntity<String> doOngoing(@RequestParam String orderId){
+		
+		System.out.println("오더아이디 : " + orderId);
+		String resultMesage ="";
+		int status;
+		
+		try {
+			orderService.doOngoing(orderId);
+			resultMesage = "success";
+			status = 200;
+		} catch (Exception e) {
+			resultMesage = "fail";
+			status = 510;
+		}
+		return ResponseEntity.status(status).body(resultMesage);
+	}
+	
 }

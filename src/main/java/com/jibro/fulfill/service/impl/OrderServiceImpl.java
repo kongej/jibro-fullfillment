@@ -10,11 +10,13 @@ import com.jibro.fulfill.dto.order.OrderListRequestDto;
 import com.jibro.fulfill.dto.order.OrderListResponseDto;
 import com.jibro.fulfill.dto.order.OrderReceiveAPIDto;
 import com.jibro.fulfill.entity.Company;
+import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.entity.Order;
 import com.jibro.fulfill.entity.Product;
 import com.jibro.fulfill.repository.CompanyRepository;
 import com.jibro.fulfill.repository.OrderRepository;
 import com.jibro.fulfill.repository.ProductRepository;
+import com.jibro.fulfill.service.OngoingService;
 import com.jibro.fulfill.service.OrderService;
 import com.jibro.fulfill.specification.OrderSpecification;
 
@@ -29,6 +31,9 @@ public class OrderServiceImpl implements OrderService{
 
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private OngoingService ongoingService;
 	
 
 	@Override
@@ -59,6 +64,25 @@ public class OrderServiceImpl implements OrderService{
 		Order order = Order.builder().orderId(dto.getOrderId()).product(product).ordererName(dto.getOrdererName()).phoneNum(dto.getPhoneNumber()).address(dto.getAddress()).count(dto.getSelectedCount()).seller(seller).orderDate(dto.getCreatedAt()).build();
 		
 		return orderRepository.save(order);
+	}
+
+
+	@Override
+	public void doOngoing(String orderId) throws Exception{
+		
+		Ongoing ongoing = ongoingService.ongoingInsert(orderId);
+		
+		Order order = orderRepository.getById(orderId);
+		order.setOrderStatus(1);
+		
+		order = orderRepository.save(order);
+		
+		String invc = order.getOngoing().getInvc();
+		System.out.println(order.toString());
+		System.out.println("invc 송장번호 : " + invc);
+		
+		
+		//여기다가 api 하시면 되요
 	}
 
 }

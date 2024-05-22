@@ -12,4 +12,6 @@ public interface OrderService {
 	public Page<OrderListResponseDto> getOrders(OrderListRequestDto dto, int page, int size);
 
 	public Order saveOrderData(OrderReceiveAPIDto dto);
+
+	public void doOngoing(String orderId) throws Exception;
 }
