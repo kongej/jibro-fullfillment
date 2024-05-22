@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.jibro.fulfill.dto.order.OrderListRequestDto;
 import com.jibro.fulfill.dto.order.OrderListResponseDto;
 import com.jibro.fulfill.dto.order.OrderReceiveAPIDto;
-import com.jibro.fulfill.dto.order.OrderSendAPIDto;
+import com.jibro.fulfill.dto.api.OrderSendAPIDto;
 import com.jibro.fulfill.entity.Company;
 import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.entity.Order;

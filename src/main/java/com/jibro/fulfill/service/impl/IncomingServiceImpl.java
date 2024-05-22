@@ -53,14 +53,14 @@ public class IncomingServiceImpl implements IncomingService {
 	}
 
 	@Override
-	public void incomingInsert(IncomingInsertDto incomingInsertDto) throws Exception {
+	public Incoming incomingInsert(IncomingInsertDto incomingInsertDto) throws Exception {
 		Incoming incoming = Incoming.builder()
 							.incomingCount(incomingInsertDto.getIncomingCount())
 							.total(incomingInsertDto.getTotal())
 							.product(incomingInsertDto.getProduct())
 							.build();
 
-		this.incomingRepository.save(incoming);
+        return this.incomingRepository.save(incoming);
 	}
 
 }

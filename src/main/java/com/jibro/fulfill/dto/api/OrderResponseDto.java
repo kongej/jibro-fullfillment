@@ -1,4 +1,4 @@
-package com.jibro.fulfill.dto;
+package com.jibro.fulfill.dto.api;
 
 import lombok.*;
 
