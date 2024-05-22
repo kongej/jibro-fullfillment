@@ -1,8 +1,5 @@
 package com.jibro.fulfill.dto.order;
 
-
-import com.jibro.fulfill.entity.Order;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

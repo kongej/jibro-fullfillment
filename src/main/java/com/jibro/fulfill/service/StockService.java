@@ -6,7 +6,7 @@ import com.jibro.fulfill.dto.stock.StockListPageDto;
 import com.jibro.fulfill.dto.stock.StockUpdateResponseDto;
 
 public interface StockService {
-	StockListPageDto stockList(String searchId, Integer page) throws Exception;
+	StockListPageDto stockList(String searchType, String searchId, Integer page) throws Exception;
 	void safetystockUpdate(StockUpdateResponseDto stockUpdateResponseDto) throws NoSuchElementException;
 	void stockUpdate(String orderId) throws NoSuchElementException;
 

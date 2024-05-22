@@ -37,7 +37,7 @@ public class OngoingServiceImpl implements OngoingService {
 	}
 
 	@Override
-	public OngoingListPageDto ongoingList(String searchId, Integer page) throws Exception {
+	public OngoingListPageDto ongoingList(String searchType, String searchId, Integer page) throws Exception {
 		final Integer pageSize = 10;
 		
 		page -= 1;
@@ -48,7 +48,18 @@ public class OngoingServiceImpl implements OngoingService {
 		if (searchId == null || searchId.trim() == "") {
 			ongoingPage = this.ongoingRepository.findAll(pageable);
 		}else {
-			ongoingPage = this.ongoingRepository.findByOngoingIdContains(searchId, pageable);
+			if(searchType.equals("searchOngoingId")){
+				ongoingPage = this.ongoingRepository.findByOngoingIdContains(searchId, pageable);
+				
+			}else if(searchType.equals("searchProductId")){
+				ongoingPage = this.ongoingRepository.findByOrderProductProductIdContains(searchId, pageable);
+				
+			}else if(searchType.equals("searchOrderId")){
+				ongoingPage = this.ongoingRepository.findByOrderOrderIdContains(searchId, pageable);
+				
+			}else {
+				ongoingPage = this.ongoingRepository.findByInvcContainingOne(searchId, pageable);
+			}
 		}
 		
 		List<Ongoing> ongoings = ongoingPage.getContent();

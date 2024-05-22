@@ -16,7 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	
 	//재고 목록 화면
 	public Page<Product> findAll(Pageable pageable);
-	public Page<Product> findByProductIdContains(String productId, Pageable pageable);
+	public Page<Product> findByProductIdContains(String searchId, Pageable pageable);
+	public Page<Product> findByMakerCompanyIdContains(String searchId, Pageable pageable);
+	
 	
 	// 제품 리스트에서 사용 중인 companyId 확인 여부
 	//boolean existsByMaker_Id(Long companyId);

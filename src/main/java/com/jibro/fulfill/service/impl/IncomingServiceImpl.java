@@ -27,7 +27,7 @@ public class IncomingServiceImpl implements IncomingService {
 	}
 	
 	@Override
-	public IncomingListPageDto incomingList(String searchId, Integer page) throws Exception {
+	public IncomingListPageDto incomingList(String searchType, String searchId, Integer page) throws Exception {
 		final Integer pageSize = 10;
 		
 		page -= 1;
@@ -38,9 +38,12 @@ public class IncomingServiceImpl implements IncomingService {
 		if (searchId == null || searchId.trim() == "") {
 			incomingPage = this.incomingRepository.findAll(pageable);
 		}else {
-			Sort sort = Sort.by(Order.desc("createdAt"));
-			pageable.getSort().and(sort);
-			incomingPage = this.incomingRepository.findByIncomingIdContains(searchId, pageable);
+			if(searchType.equals("searchIncomingId")){
+				incomingPage = this.incomingRepository.findByIncomingIdContains(searchId, pageable);
+				
+			}else {
+				incomingPage = this.incomingRepository.findByProductProductIdContains(searchId, pageable);
+			}
 		}
 		
 		
