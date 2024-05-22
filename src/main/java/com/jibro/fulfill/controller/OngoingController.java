@@ -28,15 +28,15 @@ public class OngoingController {
 		return mav;
 	}
 	
-	@GetMapping("ongoing/insert")
-	public void ongoingInsert() throws Exception{
-		
-		String orderId = "ORDER002";
-		Ongoing ongingData = this.ongoingService.ongoingInsert(orderId);
-
-		String productId = ongingData.getOrder().getProduct().getProductId();
-		Integer count = ongingData.getOrder().getCount();
-		this.stockService.stockUpdate(productId,count);
-
-	}
+//	@GetMapping("ongoing/insert")
+//	public void ongoingInsert() throws Exception{
+//
+//		String orderId = "ORDER002";
+//		Ongoing ongingData = this.ongoingService.ongoingInsert(orderId);
+//
+//		String productId = ongingData.getOrder().getProduct().getProductId();
+//		Integer count = ongingData.getOrder().getCount();
+//		this.stockService.stockUpdate(productId,count);
+//
+//	}
 }
