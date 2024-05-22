@@ -13,5 +13,5 @@ public interface OrderService {
 
 	public Order saveOrderData(OrderReceiveAPIDto dto);
 
-	public void doOngoing(String orderId) throws Exception;
+	public int doOngoing(String orderId) throws Exception;
 }

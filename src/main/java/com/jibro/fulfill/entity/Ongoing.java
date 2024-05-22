@@ -40,7 +40,7 @@ public class Ongoing extends BaseEntity{
 	@ToString.Exclude
 	private Order order;				//주문
 
-	@Column(length = 50, nullable = false, unique = true)
+	@Column(length = 11, nullable = false, unique = true)
 	private Integer invc;				//송장번호
 
 	@ManyToOne
