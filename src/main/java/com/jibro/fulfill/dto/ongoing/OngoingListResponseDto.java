@@ -24,7 +24,7 @@ public class OngoingListResponseDto {
 	private Order order;
 	//송장번호
 	@NonNull
-	private Integer invc;
+	private String invc;
 	//Order 제품번호
 	//Order 수량
 	//택배사

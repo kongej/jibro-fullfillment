@@ -22,7 +22,7 @@ public class IncomingListResponseDto {
 	@NonNull
 	private String incomingId;
 	//입고날짜
-	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 	//제품번호
 	@NonNull
 	private Product product;
@@ -38,7 +38,7 @@ public class IncomingListResponseDto {
 	public IncomingListResponseDto(Incoming incoming) {
 		this.orderStatus = incoming.getOrderStatus();
 		this.incomingId = incoming.getIncomingId();
-		this.createdAt = incoming.getCreatedAt();
+		this.updatedAt = incoming.getUpdatedAt();
 		this.product = incoming.getProduct();
 		this.incomingCount = incoming.getIncomingCount();
 		this.total = incoming.getTotal();

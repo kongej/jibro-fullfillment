@@ -26,7 +26,7 @@ public class SellerServiceImpl implements SellerService {
 	// 판매자 목록화면
 	@Override
 	public List<SellerListResponseDto> sellerList(){
-		List<Company> sellers = companyRepository.findByCompanyCategory("S");
+		List<Company> sellers = companyRepository.findByCompanyCategoryAndDelYN("S", "N");
 		
 		//String companyId, String companyName, String companyEmail, String companyContact, 
 		//String companyCategory
@@ -74,7 +74,10 @@ public class SellerServiceImpl implements SellerService {
 	@Override
 	public void delete(String companyId) throws NoSuchElementException {
 		Company company = this.companyRepository.findById(companyId).orElseThrow();
-		this.companyRepository.delete(company);
+		if(company != null) {
+			company.setDelYN("Y");
+			companyRepository.save(company);
+		}
 	}
 	
 }

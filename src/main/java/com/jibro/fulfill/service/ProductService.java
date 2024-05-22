@@ -8,6 +8,7 @@ import com.jibro.fulfill.dto.product.ProductListResponseDto;
 import com.jibro.fulfill.dto.product.ProductModDto;
 import com.jibro.fulfill.dto.product.ProductModResponseDto;
 import com.jibro.fulfill.dto.product.ProductReadResponseDto;
+import com.jibro.fulfill.dto.vendor.VendorListResponseDto;
 
 public interface ProductService {
 	List<ProductListResponseDto> productList(String productName, Integer page);

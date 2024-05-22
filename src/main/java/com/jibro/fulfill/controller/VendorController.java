@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,7 +26,7 @@ public class VendorController {
 	
 	public VendorController(VendorService vendorService) {
 		this.vendorService = vendorService;
-	}
+	}		
 	
 	// 거래처 목록 화면
 	@GetMapping("/vendor/list")
@@ -69,10 +70,10 @@ public class VendorController {
 		mav.setView(new RedirectView("/vendor/list", true));
 		return mav;
 	}
-	
+
 	// 거래처 삭제 기능
 	@PostMapping("/vendor/delete")
-	public String delete(String companyId) throws NoSuchElementException{
+	public String delete(@RequestParam("companyId") String companyId) throws NoSuchElementException{
 		this.vendorService.delete(companyId);
 		return "redirect:/vendor/list";
 	}

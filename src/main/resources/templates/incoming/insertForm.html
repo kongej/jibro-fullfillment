@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>stock Order</title>
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	p {
+		display: inline-block;
+	}
+	
+	input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: inner-spin-button;
+		opacity: 1;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#total_cost').val($('#num').val()*$('#cost').val());
+		
+		$('#num').on('input', function() {
+        	$('#total_cost').val($('#num').val()*$('#cost').val());
+        });
+	});
+	function stockList(){
+		location.href = "/stock/list";
+	}
+</script>
+</head>
+<body>
+	<h1>입고 요청</h1>
+	<form th:action="@{/incoming/insert}" method="post">
+		<p th:text="제품번호" ></p><input type="text" th:name="product"  th:value="${insertData.productId}" readonly><br>
+		<p th:text="제품명" ></p><input type="text" th:value="${insertData.productName}" readonly><br>
+		<p th:text="수량" ></p><input type="number" th:name="incomingCount" id="num" th:value="1" min=0 step=1 style="text-align:center; width: 50px;" onfocus="test()"><br>
+		<p th:text="가격" ></p><input type="text" id="cost" th:value="${insertData.cost}" readonly><br>		
+		<p th:text="합계" ></p><input type="text" th:name="total" id="total_cost" readonly><br>
+		<p th:text="거래처코드" ></p><input type="text" th:value="${insertData.maker.companyId}" readonly><br>
+		<input type="submit" th:value="요청하기">
+		<input type="button"  th:value="목록" onclick="stockList()">
+	</form>
+</body>
+</html>

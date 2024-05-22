@@ -17,19 +17,21 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="row mb-3 searchDiv" style="width: 70%">
-							<form action="" method="get">
+							<form action="" method="get" th:object="${requestDto}">
+								<input type="hidden" name="size" value="10">
 								<div class="mb-3">
 									<input type="text" name="orderId" id="orderId"
-										class="form-control"
-										style="display: inline-block; width: calc(100% - 95px);">
+										class="form-control" placeholder="주문ID" th:field="*{orderId}"
+										style="display: inline-block; width: calc(100% - 93px);">
 								</div>
 								<div class="mb-3">
 									<input type="date" name="from" id="from" class="form-control"
+										th:field="*{to}"
 										style="display: inline-block; width: calc(50% - 50px);"
-										value="" max="2999-12-31"> <input type="date"
-										name="to" id="to" class="form-control"
+										max="2999-12-31"> <input type="date" name="to" id="to"
+										class="form-control"
 										style="display: inline-block; width: calc(50% - 50px);"
-										value="" max="2999-12-31">
+										th:field="*{from}" max="2999-12-31">
 									<button class="btn btn-primary"
 										style="display: inline-block; width: 80px;" type="submit">검색</button>
 								</div>
@@ -63,10 +65,35 @@
 											<td
 												th:text="${order.orderStatus == 0 ? 'Preparing' : 'Ready to Ship'}">Status</td>
 											<td th:text="${order.seller.companyName}">Seller</td>
-											<!-- <td th:text="${order.orderedDate != null ? #dates.format(order.orderedDate, 'yyyy-MM-dd HH:mm') : ''}">Ordered Date</td> -->
+											<td
+												th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd')}"></td>
 										</tr>
 									</tbody>
 								</table>
+								<div class="float-end">
+									<ul class="pagination flex-wrap">
+										<th:block th:if="${orderPage.prev}">
+											<li class="page-item"><a class="page-link"
+												th:attr="data-num=${orderPage.start - 1}"
+												aria-label="Previous">Previous</a></li>
+										</th:block>
+
+										<th:block
+											th:each="num : ${#numbers.sequence(orderPage.start, orderPage.end)}">
+											<li class="page-item"
+												th:classappend="${orderPage.page == num ? 'active' : ''}">
+												<a class="page-link" th:attr="data-num=${num}"
+												th:text="${num}"></a>
+											</li>
+										</th:block>
+
+										<th:block th:if="${orderPage.next}">
+											<li class="page-item"><a class="page-link"
+												th:attr="data-num=${orderPage.end + 1}" aria-label="Next">Next</a>
+											</li>
+										</th:block>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -76,6 +103,22 @@
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
+		$(".pagination").on("click", "a", function(e) {
+	        e.preventDefault();
+	        e.stopPropagation();
+	
+	        const num = $(this).data("num");
+	       	console.log(num);
+	
+	        if (num !== undefined) {
+	            const formObj = $("form");
+	            formObj.find("input[name='page']").remove(); // 기존 페이지 값 제거
+	            formObj.append(`<input type='hidden' name='page' />`);
+	            $("input[name='page']").val(num);
+
+	            formObj.submit();
+	        }
+	    });
     function sendEmail() {
         var email = $("#email").val();
         // 여기에 이메일 보내는 기능 구현

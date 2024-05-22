@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -75,7 +76,7 @@ public class SellerController {
 
 	// 판매자 삭제 기능
 	@PostMapping("/seller/delete")
-	public String delete(String companyId) throws NoSuchElementException{
+	public String delete(@RequestParam("companyId") String companyId) throws NoSuchElementException{
 		this.sellerService.delete(companyId);
 		return "redirect:/seller/list";
 	}
