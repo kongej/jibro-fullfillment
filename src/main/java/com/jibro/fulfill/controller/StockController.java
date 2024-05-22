@@ -19,10 +19,11 @@ public class StockController {
 	private StockService stockService;
 	
 	@GetMapping("stock/list")
-	public ModelAndView stockList() throws Exception{
+	public ModelAndView stockList(String productId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		List<StockListResponseDto> stockList = this.stockService.stockList();
+		List<StockListResponseDto> stockList = this.stockService.stockList(productId, page);
 		mav.addObject("stockList",stockList);
+		mav.addObject("productId",productId);
 		mav.setViewName("stock/list");
 		return mav;
 	}
@@ -30,9 +31,16 @@ public class StockController {
 	@PostMapping("stock/update")
 	public ModelAndView stockUpdate(@Validated StockUpdateResponseDto stockUpdateResponseDto) {
 		ModelAndView mav = new ModelAndView();
-		this.stockService.stockUpdate(stockUpdateResponseDto);
+		this.stockService.safetystockUpdate(stockUpdateResponseDto);
 		mav.setViewName(String.format("redirect:/stock/list"));
 		return mav; 
 	}
 	
+	@PostMapping("incoming/insertForm") 
+	public ModelAndView insertForm(@Validated StockListResponseDto stockListResponseDto) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("insertData", stockListResponseDto);
+		mav.setViewName("incoming/insertForm");
+		return mav;
+	}
 }

@@ -1,30 +1,47 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>거래처 정보 수정</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 		<meta charset="UTF-8">
 	</head>
 	<body>
-		<h1>거래처 정보 수정</h1>
-		<form method="POST" th:action="@{/vendor/edit/{companyId}(companyId=*{companyId})}" th:object="${vendorModResponsetDto}">
-			<p>
-				거래처 코드 
-				<input type="text" name="companyId" id="companyId" th:value="*{companyId}" readOnly/>
-			</p>
-			<p>거래처명 <input type="text" name="companyName" th:value="*{companyName}" required/></p>
-			<p>이메일 <input type="text" name="companyEmail" th:value="*{companyEmail}" required/></p>
-			<p>연락처 <input type="text" name="companyContact" th:value="*{companyContact}" required/></p>
-			<p>분류
-		 		<select name="companyCategory" id="companyCategory">
-				    <option value="D">택배사</option>
-				    <option value="M">제조사</option>
-				</select> 
-			</p>
-			<p>
-				<input type="submit" value="수정"/>
-				<input type="reset" value="초기화" />
-				<input type="button" value="목록" onclick="location.href='/vendor/list'"/>
-			</p>
-		</form>
+	<div class="container">
+	    <div class="card">
+	        <div class="card-header">	
+				<h3>거래처 정보 수정</h3>
+				<hr>
+				<form method="POST" th:action="@{/vendor/edit/{companyId}(companyId=*{companyId})}" th:object="${vendorModResponsetDto}">
+					<div class="mb-3">
+					<p>
+						거래처 코드 
+						<input type="text" name="companyId" id="companyId" class="form-control" th:value="*{companyId}" readOnly/>
+					</p>
+					</div>
+					<div class="mb-3">
+					<p>거래처명 <input type="text" name="companyName" class="form-control" th:value="*{companyName}" required/></p>
+					</div>
+					<div class="mb-3">
+					<p>이메일 <input type="text" name="companyEmail" class="form-control" th:value="*{companyEmail}" required/></p>
+					</div>
+					<div class="mb-3">
+					<p>연락처 <input type="text" name="companyContact" class="form-control" th:value="*{companyContact}" required/></p>
+					</div>
+					<p>분류
+				 		<select name="companyCategory" id="companyCategory" class="form-select">
+						    <option value="D">택배사</option>
+						    <option value="M">제조사</option>
+						</select> 
+					</p>
+					<p>
+						<input type="submit" value="수정" class="btn btn-primary"/>
+						<input type="reset" value="초기화" class="btn btn-primary"/>
+						<input type="button" value="목록" class="btn btn-primary" onclick="location.href='/vendor/list'"/>
+					</p>
+				</form>
+	 		</div>
+	 	  </div>
+	 	</div>				
+			
 		<script>
 	        document.addEventListener('DOMContentLoaded', function () {
 	            var form = document.querySelector('form');
@@ -38,12 +55,12 @@
 	                // 선택된 카테고리에 따라 companyId 값을 설정
 	                if (selectedCategory === 'D') {
 	                    if (!companyIdValue.startsWith('D')) {
-	                        alert('택배사를 선택하셨으므로 거래처 코드는 "D"로 시작해야 합니다.');
+	                        alert('거래처 코드는 택배사는 "D", 제조사는 "M"으로 설정하십시오.');
 	                        event.preventDefault(); // 폼 제출을 막습니다.
 	                    }
 	                } else if (selectedCategory === 'M') {
 	                    if (!companyIdValue.startsWith('M')) {
-	                        alert('제조사를 선택하셨으므로 거래처 코드는 "M"으로 시작해야 합니다.');
+	                        alert('거래처 코드는 택배사는 "D", 제조사는 "M"으로 설정하십시오.');
 	                        event.preventDefault(); // 폼 제출을 막습니다.
 	                    }
 	                }

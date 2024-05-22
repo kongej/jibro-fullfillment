@@ -12,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,12 +23,17 @@ import com.jibro.fulfill.dto.product.ProductListResponseDto;
 import com.jibro.fulfill.dto.product.ProductModDto;
 import com.jibro.fulfill.dto.product.ProductModResponseDto;
 import com.jibro.fulfill.dto.product.ProductReadResponseDto;
+import com.jibro.fulfill.dto.vendor.VendorListResponseDto;
 import com.jibro.fulfill.service.ProductService;
+import com.jibro.fulfill.service.VendorService;
 
 @Controller
 public class ProductController {
 	@Autowired
 	private ProductService productService; 
+	
+	@Autowired
+	private VendorService vendorService;
 	
 	// 상품 목록 리스트
 	@GetMapping(value= {"/product/list"})
@@ -43,8 +49,12 @@ public class ProductController {
 	
 	// 상품 입력 화면
 	@GetMapping("/product/insert")
-	public String create(){
-		return "product/insert";
+	public ModelAndView create() {
+	    List<VendorListResponseDto> makerList = this.vendorService.makerList();
+	    ModelAndView mav = new ModelAndView();
+	    mav.setViewName("/product/insert");
+	    mav.addObject("makerList", makerList);
+	    return mav;
 	}
 	
 	// 상품 입력 기능

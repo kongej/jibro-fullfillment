@@ -25,6 +25,6 @@ public class OrderListResponseDto {
 	private Integer orderStatus; 		// 상태 0:상품준비중 1:배송준비중
 	private Company seller; 			// 판매자
 //	private String sellerId;			// 판매자코드
-	private LocalDateTime orderedDate; 	// 주문날짜
+	private LocalDateTime orderDate; 	// 주문날짜
 	
 }

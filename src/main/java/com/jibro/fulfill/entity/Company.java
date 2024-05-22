@@ -38,11 +38,14 @@ public class Company extends BaseEntity{
 	@Column(length = 1, nullable = false)
 	private String companyCategory;		//거래처카테고리 판매자 : S / 제조사 : M / 택배사 : D
 
-	public Company(String companyId, String companyName, String companyEmail, String companyContact, String companyCategory) {
+	private String delYN;
+	
+	public Company(String companyId, String companyName, String companyEmail, String companyContact, String companyCategory, String delYN) {
 		this.companyId = companyId;
 		this.companyName = companyName;
 		this.companyEmail = companyEmail;
 		this.companyContact = companyContact;
 		this.companyCategory = companyCategory;
+		this.delYN = "N";
 	}
 }

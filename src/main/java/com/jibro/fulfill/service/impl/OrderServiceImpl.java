@@ -6,10 +6,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.jibro.fulfill.dto.order.OrderListRequestDto;
 import com.jibro.fulfill.dto.order.OrderListResponseDto;
+import com.jibro.fulfill.dto.order.OrderReceiveAPIDto;
+import com.jibro.fulfill.entity.Company;
+import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.entity.Order;
+import com.jibro.fulfill.entity.Product;
+import com.jibro.fulfill.repository.CompanyRepository;
 import com.jibro.fulfill.repository.OrderRepository;
+import com.jibro.fulfill.repository.ProductRepository;
+import com.jibro.fulfill.service.OngoingService;
 import com.jibro.fulfill.service.OrderService;
+import com.jibro.fulfill.specification.OrderSpecification;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -17,15 +26,21 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
     private OrderRepository orderRepository;
 	
-	private OrderServiceImpl(OrderRepository orderRepository) {
-		this.orderRepository = orderRepository;
-	}
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Autowired
+	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private OngoingService ongoingService;
+	
 
 	@Override
-    public Page<OrderListResponseDto> getOrders(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Order> orders = orderRepository.findAll(pageable);
-        
+    public Page<OrderListResponseDto> getOrders(OrderListRequestDto dto, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orders = orderRepository.findAll(OrderSpecification.getOrders(dto.getOrderId(), dto.getFrom(), dto.getTo()), pageable);
+    
         return orders.map(order -> new OrderListResponseDto(
                 order.getOrderId(),
                 order.getProduct(),
@@ -36,7 +51,38 @@ public class OrderServiceImpl implements OrderService{
                 order.getOngoing(),
                 order.getOrderStatus(),
                 order.getSeller(),
-                order.getOrderedDate()
+                order.getOrderDate()
         ));
     }
+
+
+	@Override
+	public Order saveOrderData(OrderReceiveAPIDto dto) {
+		Product product = productRepository.getById(dto.getProductId());
+		Company seller = companyRepository.getById(dto.getSeller());
+		
+		Order order = Order.builder().orderId(dto.getOrderId()).product(product).ordererName(dto.getOrdererName()).phoneNum(dto.getPhoneNumber()).address(dto.getAddress()).count(dto.getSelectedCount()).seller(seller).orderDate(dto.getCreatedAt()).build();
+		
+		return orderRepository.save(order);
+	}
+
+
+	@Override
+	public void doOngoing(String orderId) throws Exception{
+		
+		Ongoing ongoing = ongoingService.ongoingInsert(orderId);
+		
+		Order order = orderRepository.getById(orderId);
+		order.setOrderStatus(1);
+		
+		order = orderRepository.save(order);
+		
+		String invc = order.getOngoing().getInvc();
+		System.out.println(order.toString());
+		System.out.println("invc 송장번호 : " + invc);
+		
+		
+		//여기다가 api 하시면 되요
+	}
+
 }

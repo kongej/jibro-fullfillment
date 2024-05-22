@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "ongoings")
@@ -37,7 +41,7 @@ public class Ongoing extends BaseEntity{
 	private Order order;				//주문
 
 	@Column(length = 50, nullable = false, unique = true)
-	private Integer invc;				//송장번호
+	private String invc;				//송장번호
 
 	@ManyToOne
 	@JoinColumn(name = "delever_id", nullable = false)

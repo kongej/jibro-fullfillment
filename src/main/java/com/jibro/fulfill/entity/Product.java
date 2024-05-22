@@ -49,6 +49,7 @@ public class Product extends BaseEntity{
 	@ToString.Exclude
 	private Company maker;				//제조사
 	
+	
 	public Product() {
         this.safetyStock = 0;
         this.stockCount = 0;
