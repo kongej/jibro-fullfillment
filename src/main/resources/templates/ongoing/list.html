@@ -17,11 +17,15 @@
 	<h1>출고 관리</h1>
 
 	<div align="right" style="width: 1020px;">
-	<input type="text" ><button>검색</button>
+	<form th:action="@{/ongoing/list}" method="get">
+		<input th:if="${searchId}" type="text" th:name="searchId" th:value="${searchId}">
+		<input th:if="!${searchId}" type="text" th:name="searchId" >
+		<input type="submit" th:value="검색">
+	</form>
 	</div>
 
 	<div class="list_container">
-		<table style="width: 1020px; border: solid 1px; border-collapse: collapse; text-align: center;">
+		<table style="width: 1020px; border-collapse: collapse; text-align: center;">
 			<tr style="border: solid 1px;">
 				<td style="border: solid 1px;"></td>
 				<td style="border: solid 1px;"><p>출고번호</p></td>
@@ -33,7 +37,7 @@
 				<td style="border: solid 1px;"><p>택배사</p></td>
 			</tr>
 			<tr th:each="ongoingList : ${ongoingList}">
-				<td style="border: solid 1px;"><p th:text="${ongoingListStat.count}" ></p></td>
+				<td style="border: solid 1px;"><p th:text="${ongoingListStat.count+(page-1)*10}" ></p></td>
 				<td style="border: solid 1px;"><p th:text="${ongoingList.ongoingId}" ></p></td>
 				<td style="border: solid 1px;"><p th:text="${ongoingList.createdAt}" ></p></td>
 				<td style="border: solid 1px;"><p th:text="${ongoingList.invc}" ></p></td>
@@ -42,11 +46,17 @@
 				<td style="border: solid 1px;"><p th:text="${ongoingList.order.count}" ></p></td>
 				<td style="border: solid 1px;"><p th:text="${ongoingList.delever.companyId}" ></p></td>
 			</tr>
-			<tr th:if="!${ongoingList}">
-				<td colspan="8" ><p>저장된 데이터가 없습니다.</p></td>
+			<tr th:if="!${#lists.size(ongoingList)}">
+				<td colspan="8" style="border: solid 1px;"><p>데이터가 없습니다.</p></td>
 			</tr>
-		</table>
-		
+			<tr th:if="${totalPage > 1}" >
+				<td colspan="8" >
+					<p th:each="index : ${#numbers.sequence(1, totalPage)}">
+						<a th:text="${index}" th:href="@{/ongoing/list?searchId={id}&page={count}(id=${searchId}, count=${indexStat.count})}"></a>
+					</p>
+				</td>
+			</tr>
+		</table>	
 	</div>
 
 </body>

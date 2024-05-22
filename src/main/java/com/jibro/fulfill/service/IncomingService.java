@@ -1,11 +1,9 @@
 package com.jibro.fulfill.service;
 
-import java.util.List;
-
 import com.jibro.fulfill.dto.incoming.IncomingInsertDto;
-import com.jibro.fulfill.dto.incoming.IncomingListResponseDto;
+import com.jibro.fulfill.dto.incoming.IncomingListPageDto;
 
 public interface IncomingService {
-	List<IncomingListResponseDto> incomingList() throws Exception;
+	IncomingListPageDto incomingList(String searchId, Integer page) throws Exception;
 	void incomingInsert(IncomingInsertDto incomingInsertDto) throws Exception;
 }

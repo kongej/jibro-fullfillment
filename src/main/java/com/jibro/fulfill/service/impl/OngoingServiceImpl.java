@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.jibro.fulfill.dto.ongoing.OngoingListPageDto;
 import com.jibro.fulfill.dto.ongoing.OngoingListResponseDto;
 import com.jibro.fulfill.entity.Company;
 import com.jibro.fulfill.entity.Ongoing;
@@ -32,10 +37,23 @@ public class OngoingServiceImpl implements OngoingService {
 	}
 
 	@Override
-	public List<OngoingListResponseDto> ongoingList() throws Exception {
-		List<Ongoing> ongoings;
-		ongoings = this.ongoingRepository.findAll();
-		return ongoings.stream().map(ongoing-> new OngoingListResponseDto(ongoing)).collect(Collectors.toList());
+	public OngoingListPageDto ongoingList(String searchId, Integer page) throws Exception {
+		final Integer pageSize = 10;
+		
+		page -= 1;
+		
+		Pageable pageable = PageRequest.of(page, pageSize, Direction.DESC, "createdAt");
+		Page<Ongoing> ongoingPage;
+		
+		if (searchId == null || searchId.trim() == "") {
+			ongoingPage = this.ongoingRepository.findAll(pageable);
+		}else {
+			ongoingPage = this.ongoingRepository.findByOngoingIdContains(searchId, pageable);
+		}
+		
+		List<Ongoing> ongoings = ongoingPage.getContent();
+		List<OngoingListResponseDto> response = ongoings.stream().map(ongoing-> new OngoingListResponseDto(ongoing)).collect(Collectors.toList());
+		return new OngoingListPageDto(response, ongoingPage.isLast(), ongoingPage.getTotalPages());
 	}
 
 	@Override
