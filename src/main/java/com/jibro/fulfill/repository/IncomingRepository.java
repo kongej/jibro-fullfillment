@@ -10,5 +10,7 @@ import com.jibro.fulfill.entity.Incoming;
 @Repository
 public interface IncomingRepository extends JpaRepository<Incoming, String> {
 	public Page<Incoming> findAll(Pageable pageable);
-	public Page<Incoming> findByIncomingIdContains(String productId, Pageable pageable);
+	public Page<Incoming> findByIncomingIdContains(String searchId, Pageable pageable);
+	public Page<Incoming> findByProductProductIdContains(String searchId, Pageable pageable);
+	
 }

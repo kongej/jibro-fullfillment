@@ -18,26 +18,27 @@ public class StockController {
 	private StockService stockService;
 	
 	@GetMapping("stock/list")
-	public ModelAndView stockList(String searchId, Integer page) throws Exception{
+	public ModelAndView stockList(String searchType, String searchId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		if (page == null) page=1;
 		
-		StockListPageDto  stockList = this.stockService.stockList(searchId, page);
+		StockListPageDto  stockList = this.stockService.stockList(searchType, searchId, page);
 		mav.addObject("stockList", stockList.getStocks());
 		mav.addObject("lastPage", stockList.isLastPage());
 		mav.addObject("totalPage", stockList.getTotalPage());
 		
 		mav.addObject("searchId", searchId);
 		mav.addObject("page", page);
+		mav.addObject("searchType", searchType);
 		mav.setViewName("stock/list");
 		return mav;
 	}
 	
 	@PostMapping("stock/update")
-	public ModelAndView stockUpdate(@Validated StockUpdateResponseDto stockUpdateResponseDto, String searchId, Integer page) {
+	public ModelAndView stockUpdate(@Validated StockUpdateResponseDto stockUpdateResponseDto, String searchType, String searchId, Integer page) {
 		ModelAndView mav = new ModelAndView();
 		this.stockService.safetystockUpdate(stockUpdateResponseDto);
-		mav.setViewName(String.format("redirect:/stock/list?searchId="+searchId+"&page="+page));
+		mav.setViewName(String.format("redirect:/stock/list?searchType="+searchType+"&searchId="+searchId+"&page="+page));
 		return mav; 
 	}
 	

@@ -2,69 +2,96 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Incoming Page</title>
-<style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-	p {
-		display: inline-block;
-	}
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+<meta charset="UTF-8">
+    <style>
+        table th, table td {
+            text-align: center; /* 테이블 내 텍스트 가운데 정렬 */
+            vertical-align: middle; 
+        }
+
+		a {
+			text-decoration-line: none;
+		}
+
+       table{
+           margin-top: 10px;
+      }
+    </style>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		if("[[${searchType}]]" == ""){
+			$("#comboBox").val("searchIncomingId").prop("selected",true);
+		}else{
+			$("#comboBox").val("[[${searchType}]]").prop("selected",true);
+		}
+	});
+</script>
 </head>
 <body>
-	<h1>입고 관리</h1>
-	
-	<div align="right" style="width: 1020px;">
-	<form th:action="@{/incoming/list}" method="get">
-		<input th:if="${searchId}" type="text" th:name="searchId" th:value="${searchId}">
-		<input th:if="!${searchId}" type="text" th:name="searchId" >
-		<input type="submit" th:value="검색">
-	</form>
+<div class="container">
+        <div class="card">
+	        <div class="card-header">
+				<h3>입고 관리</h3>
+				<hr>
+				<div class="row mt-3 mb-3">
+				<div class="table-responsive">
+				<form th:action="@{/incoming/list}" method="get">
+					<div class="row mt-3">
+						<div class="col" style="text-align: right;">
+							<select id="comboBox" name="searchType" class="form-select" style="display: inline-block; width:auto;">
+								<option value="searchIncomingId" >입고번호</option>
+								<option value="searchProductId" >제품번호</option>
+							</select>
+							<input th:if="${searchId}" type="text" th:name="searchId" th:value="${searchId}"/>
+							<input th:if="!${searchId}" type="text" th:name="searchId" />
+							<input type="submit" th:value="검색" class="btn btn-primary" />
+						</div>
+					</div>
+				</form>		
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>순번</th>
+						<th>주문 상태</th>
+						<th>입고번호</th>
+						<th>입고날짜</th>
+						<th>제품번호</th>
+						<th>수량</th>
+						<th>원가</th>
+						<th>총 가격</th>
+						<th>거래처 코드</th>
+					</tr>
+					
+					<tr th:each="incomingList : ${incomingList}">
+						<td th:text="${incomingListStat.count+(page-1)*10}"></td>
+						<td>
+							<span th:if="${incomingList.orderStatus} == '0'" th:text="입고대기" ></span>
+							<span th:if="${incomingList.orderStatus} == '1'" th:text="입고완료" ></span>
+						</td>
+						<td th:text="${incomingList.incomingId}" ></td>
+						<td>
+							<span th:if="${incomingList.orderStatus} == '1'" th:text="${incomingList.updatedAt}" ></span>
+						</td>
+						<td th:text="${incomingList.product.productId}" ></td>
+						<td th:text="${incomingList.incomingCount}" ></td>
+						<td th:text="${incomingList.product.cost}" ></td>
+						<td th:text="${incomingList.total}" ></td>
+						<td th:text="${incomingList.product.maker.companyId}" ></td>
+					</tr>
+					<tr th:if="!${#lists.size(incomingList)}">
+						<td colspan="9"><span>데이터가 없습니다.</span></td>
+					</tr>
+				</table>
+					<div class="col" th:if="${totalPage > 1}"  style="text-align:center;">
+						<span th:each="index : ${#numbers.sequence(1, totalPage)}">
+							<a th:text="${index}" th:style="${page == index ? 'font-weight: bold;': ''}" th:href="@{/incoming/list?searchType={type}&searchId={id}&page={count}(type=${searchType}, id=${searchId}, count=${indexStat.count})}"></a>
+						</span>
+					</div>	
+			 </div>
+		  </div>
+		</div>	
 	</div>
-	
-	<div class="list_container">
-		<table style="width: 1020px; border-collapse: collapse; text-align: center;">
-			<tr style="border: solid 1px;">
-				<td style="border: solid 1px;"></td>
-				<td style="border: solid 1px;"><p>주문 상태</p></td>
-				<td style="border: solid 1px;"><p>입고번호</p></td>
-				<td style="border: solid 1px;"><p>입고날짜</p></td>
-				<td style="border: solid 1px;"><p>제품번호</p></td>
-				<td style="border: solid 1px;"><p>수량</p></td>
-				<td style="border: solid 1px;"><p>원가</p></td>
-				<td style="border: solid 1px;"><p>총 가격</p></td>
-				<td style="border: solid 1px;"><p>거래처 코드</p></td>
-			</tr>
-			<tr th:each="incomingList : ${incomingList}">
-				<td style="border: solid 1px;"><p th:text="${incomingListStat.count+(page-1)*10}" ></p></td>
-				<td style="border: solid 1px;">
-					<p th:if="${incomingList.orderStatus} == '0'" th:text="입고대기" />
-					<p th:if="${incomingList.orderStatus} == '1'" th:text="입고완료" />
-				</td>
-				<td style="border: solid 1px;"><p th:text="${incomingList.incomingId}" ></p></td>
-				<td style="border: solid 1px;">
-					<p th:if="${incomingList.orderStatus} == '1'" th:text="${incomingList.updatedAt}" ></p>
-				</td>
-				<td style="border: solid 1px;"><p th:text="${incomingList.product.productId}" ></p></td>
-				<td style="border: solid 1px;"><p th:text="${incomingList.incomingCount}" ></p></td>
-				<td style="border: solid 1px;"><p th:text="${incomingList.product.cost}" ></p></td>
-				<td style="border: solid 1px;"><p th:text="${incomingList.total}" ></p></td>
-				<td style="border: solid 1px;"><p th:text="${incomingList.product.maker.companyId}" ></p></td>
-			</tr>
-			<tr th:if="!${#lists.size(incomingList)}">
-				<td colspan="9" style="border: solid 1px;"><p>데이터가 없습니다.</p></td>
-			</tr>
-			<tr th:if="${totalPage > 1}" >
-				<td colspan="9" >
-					<p th:each="index : ${#numbers.sequence(1, totalPage)}">
-						<a th:text="${index}" th:href="@{/incoming/list?searchId={id}&page={count}(id=${searchId}, count=${indexStat.count})}"></a>
-					</p>
-				</td>
-			</tr>
-		</table>
-	</div>
-
+</div>
 </body>
 </html>

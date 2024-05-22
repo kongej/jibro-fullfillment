@@ -16,17 +16,18 @@ public class IncomingController {
 	IncomingService incomingService;
 	
 	@GetMapping("incoming/list")
-	public ModelAndView incomingList(String searchId, Integer page) throws Exception{
+	public ModelAndView incomingList(String searchType, String searchId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		if (page == null) page=1;
 		
-		IncomingListPageDto incomingList = this.incomingService.incomingList(searchId, page);
+		IncomingListPageDto incomingList = this.incomingService.incomingList(searchType, searchId, page);
 		mav.addObject("incomingList",incomingList.getIncomings());
 		mav.addObject("lastPage", incomingList.isLastPage());
 		mav.addObject("totalPage", incomingList.getTotalPage());
 		
 		mav.addObject("searchId", searchId);
 		mav.addObject("page", page);
+		mav.addObject("searchType", searchType);
 		mav.setViewName("incoming/list");
 		
 		return mav;

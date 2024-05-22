@@ -28,7 +28,7 @@ public class StockServiceImpl implements StockService {
 	}
 	
 	@Override
-	public StockListPageDto stockList(String searchId, Integer page) throws Exception {
+	public StockListPageDto stockList(String searchType, String searchId, Integer page) throws Exception {
 		final Integer pageSize = 10;
 		
 		page -= 1;
@@ -39,10 +39,14 @@ public class StockServiceImpl implements StockService {
 		if (searchId == null || searchId.trim() == "") {
 			stockPage = this.productRepository.findAll(pageable);
 		}else {
-			Sort sort = Sort.by(Order.desc("createdAt"));
-			pageable.getSort().and(sort);
-			stockPage = this.productRepository.findByProductIdContains(searchId, pageable);
+			if(searchType.equals("searchProductId")){
+				stockPage = this.productRepository.findByProductIdContains(searchId, pageable);
+				
+			}else {
+				stockPage = this.productRepository.findByMakerCompanyIdContains(searchId, pageable);
+			}
 		}
+		
 		List<Product> stocks = stockPage.getContent();
 		
 		List<StockListResponseDto> response = stocks.stream().map(stock-> new StockListResponseDto(stock)).collect(Collectors.toList());
