@@ -58,8 +58,8 @@ public class SalesServiceImpl implements SalesService{
 		}
 	}
 	
-	//@Scheduled(cron = "0 0 0 1 * *") // 매달 1일 00:00:00에 실행
 //    @Scheduled(cron = "0 * * * * *") 
+	@Scheduled(cron = "0 0 0 1 * *") // 매달 1일 00:00:00에 실행
     public void sendMonthlyEmail() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime from = now.withDayOfMonth(1).minusMonths(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
@@ -83,7 +83,7 @@ public class SalesServiceImpl implements SalesService{
     	
     	String emailTemplate = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>table th, table td {text-align: center; vertical-align: middle;}</style></head><body><p>안녕하세요. Jibro Fulfillment 입니다</p><p>";
     	emailTemplate += subject;
-    	emailTemplate += " 매출 정보 입니다.</p><table style=\"width:400px\"><thead><tr><th>제품코드</th><th>날짜</th><th>매출수량</th></tr></thead><tbody>";
+    	emailTemplate += " 입니다.</p><table style=\"width:400px\"><thead><tr><th>제품코드</th><th>날짜</th><th>매출수량</th></tr></thead><tbody>";
         
         for (SalesSummaryResponseDto sale : salesList) {
             emailTemplate += "<tr><td>" + sale.getProduct().getProductId() + "</td><td>" + sale.getOrderDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "</td><td>" + sale.getTotalCount() + "</td></tr>";
@@ -101,7 +101,7 @@ public class SalesServiceImpl implements SalesService{
         try {
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text);
+            helper.setText(text, true);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

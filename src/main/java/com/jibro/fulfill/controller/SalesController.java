@@ -43,8 +43,14 @@ public class SalesController {
 	@PostMapping("/send-email")
     public ResponseEntity<String> sendEmail(@RequestBody EmailRequestDTO dto) {
 		System.out.println("1번");
-		LocalDateTime from =  LocalDateTime.parse(dto.getFrom() + "T00:00:00");
-		LocalDateTime to =  LocalDateTime.parse(dto.getTo() + "T00:00:00");
+		LocalDateTime from = null;
+		LocalDateTime to = null;
+		if(dto.getFrom() != "") {
+			from =  LocalDateTime.parse(dto.getFrom() + "T00:00:00");
+		}
+		if(dto.getTo() != "") {
+			to =  LocalDateTime.parse(dto.getTo() + "T00:00:00");
+		}
 		salesService.sendEmailClick(dto.getEmail(), from, to);
         return ResponseEntity.status(200).body("Email sent successfully!");
     }
