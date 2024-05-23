@@ -357,10 +357,23 @@
 <script th:inline="javascript">
       // 서버에서 받은 데이터를 JavaScript 변수에 할당
     var salesList = /*[[${responseDto.salesList}]]*/ [];
-
+	
+    // 날짜를 월/일 형식으로 변환하는 함수
+    function formatDate(dateString) {
+        var date = new Date(dateString);
+        var month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더해줍니다.
+        var day = date.getDate();
+        // 한 자리 수인 경우 앞에 0을 추가
+        if (month < 10) {
+            month = '0' + month;
+        }
+        return month + '/' + day;
+    }
+	
+	
     // 날짜와 판매량 데이터 추출
     var labels = salesList.map(function(sale) {
-        return sale.orderDate;
+        return formatDate(sale.orderDate);
     });
 
     var data = salesList.map(function(sale) {
