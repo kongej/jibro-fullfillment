@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
@@ -353,16 +354,28 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Set up the charts
+<script th:inline="javascript">
+      // 서버에서 받은 데이터를 JavaScript 변수에 할당
+    var salesList = /*[[${responseDto.salesList}]]*/ [];
+
+    // 날짜와 판매량 데이터 추출
+    var labels = salesList.map(function(sale) {
+        return sale.orderDate;
+    });
+
+    var data = salesList.map(function(sale) {
+        return sale.totalCount;
+    });
+
+    // Set up the chart
     var ctx = document.getElementById('myAreaChart').getContext('2d');
     var myAreaChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: labels,
             datasets: [{
-                label: 'Product',
-                data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+                label: salesList[0].product.productId,
+                data: data,
                 backgroundColor: 'rgba(78, 115, 223, 0.05)',
                 borderColor: 'rgba(78, 115, 223, 1)',
             }],
@@ -372,7 +385,7 @@
             scales: {
                 x: {
                     time: {
-                        unit: 'month'
+                        unit: 'day' // 날짜별로 나타내므로 'day'로 변경
                     },
                     grid: {
                         display: false,

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jibro.fulfill.dto.main.ProductSummaryDto;
+import com.jibro.fulfill.dto.sales.SalesSummaryResponseDto;
 import com.jibro.fulfill.repository.IncomingRepository;
 import com.jibro.fulfill.repository.OngoingRepository;
 import com.jibro.fulfill.repository.OrderRepository;
@@ -56,6 +57,17 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public Integer getNewOrderCount() {
 		return orderRepository.countNewOrder();
+	}
+
+	@Override
+	public List<SalesSummaryResponseDto> getSalesSummaryList() {
+		LocalDate today = LocalDate.now();
+		
+		LocalDateTime fromDate = LocalDateTime.of(today.minusDays(8), LocalTime.MIN);
+		LocalDateTime toDate = LocalDateTime.of(today.minusDays(1), LocalTime.MAX);
+		List<SalesSummaryResponseDto> salesList = orderRepository.findOrderSummariesEmailContent(fromDate, toDate);
+
+		return salesList;
 	}
 
 }

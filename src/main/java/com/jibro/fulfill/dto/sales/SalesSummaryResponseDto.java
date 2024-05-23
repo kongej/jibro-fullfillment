@@ -6,8 +6,10 @@ import com.jibro.fulfill.entity.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 @AllArgsConstructor
 public class SalesSummaryResponseDto {
 	

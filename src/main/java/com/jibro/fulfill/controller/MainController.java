@@ -22,6 +22,7 @@ public class MainController {
 		responseDto.setTodayTotalOngoingCount(mainService.getTotalOngoingCountForToday());
 		responseDto.setProductList(mainService.getProductSummary());
 		responseDto.setNewOrder(mainService.getNewOrderCount());
+		responseDto.setSalesList(mainService.getSalesSummaryList());
 		model.addAttribute("responseDto", responseDto);
 	    return "main/main";
 	}
