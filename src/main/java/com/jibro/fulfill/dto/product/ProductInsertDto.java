@@ -5,6 +5,7 @@ import com.jibro.fulfill.entity.Company;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -24,7 +25,7 @@ public class ProductInsertDto {
 	
 	private Integer defectiveCount;	
 		
-	private String productImage;
+	private MultipartFile productImage;
 	
 	@NonNull
 	private Company maker;	

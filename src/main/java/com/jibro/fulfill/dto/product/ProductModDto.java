@@ -6,6 +6,7 @@ import com.jibro.fulfill.entity.Product;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -25,21 +26,9 @@ public class ProductModDto {
 	
 	private Integer defectiveCount;	
 		
-	private String productImage;
+	private MultipartFile productImage;
 	
 	@NonNull
 	private Company maker;	
-	
-	public Product fill(Product product) {
-		product.setProductId(this.productId);
-		product.setProductName(this.productName);
-		product.setCost(this.cost);
-		product.setSafetyStock(this.safetyStock);
-		product.setStockCount(this.stockCount);
-		product.setDefectiveCount(this.defectiveCount);
-		product.setProductImage(this.productImage);
-		product.setMaker(this.maker);
-		
-		return product;
-	}
+
 }
