@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class IncomingApiDto {
 
     /* 주문번호(pk, yymmdd_001) */

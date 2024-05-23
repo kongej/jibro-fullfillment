@@ -2,6 +2,7 @@ package com.jibro.fulfill.controller;
 
 
 import com.jibro.fulfill.dto.api.IncomingApiDto;
+import com.jibro.fulfill.entity.Incoming;
 import com.jibro.fulfill.entity.Product;
 import com.jibro.fulfill.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,10 @@ public class ApiController {
 
     @PutMapping("/incoming/product")
     public ResponseEntity<IncomingApiDto> incomingProduct(@RequestBody IncomingApiDto incomingApiDto) {
-        apiService.updateIncoming(incomingApiDto);
+
+        Incoming incomingResponse = apiService.updateIncoming(incomingApiDto);
+        String productId = apiService.updateStock(incomingResponse);
+        apiService.updateStock(productId);
         return ResponseEntity.status(HttpStatus.OK).body(incomingApiDto);
     }
 }
