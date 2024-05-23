@@ -7,8 +7,9 @@ import lombok.Setter;
 @Setter
 public class MainResponseDto {
 
-	private Integer todayIncomingTotalCount;
-	private Integer todayOngoingTotalCount;
-	private String warningStockProduct;
+	private Integer todayTotalIncomingCount;
+	private Integer todayTotalOngoingCount;
+	private Integer stockCount;
+	private Integer safetyStock;
 	private Integer newOrder;
 }
