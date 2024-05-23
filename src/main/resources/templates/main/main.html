@@ -16,13 +16,14 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        #wrapper{
+        #wrapper {
             display: flex;
-
         }
-        .outerSide{
+
+        .outerSide {
             width: 250px;
         }
+
         .sidebar {
             background-color: #4e73df;
             display: block;
@@ -46,6 +47,7 @@
             padding: 20px;
             display: block;
             float: right;
+            width: 100%;
         }
 
         .card {
@@ -58,19 +60,37 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        #Logo{
+
+        #Logo {
             text-decoration: none;
             color: white;
             font-size: 50px;
             font-family: Arial;
             font-weight: bold;
         }
+
         #Logo:hover {
             text-decoration: none;
 
         }
-        .sidebar>li{
+
+        .sidebar > li {
             text-align: center;
+        }
+
+        .topSide {
+            width: 100%;
+        }
+
+        .rowSide {
+            width: 100%;
+        }
+
+        .tableBack {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -83,7 +103,8 @@
 
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-             <a class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none" th:href="@{/main}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none"
+               th:href="@{/main}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -163,112 +184,166 @@
 
                 </div>
 
-                <!-- Content Row -->
-                <div class="row">
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body" th:onclick="location.href='/incoming/list'">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" >
-                                            입 고</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${responseDto.todayIncomingTotalCount} + ' 개'">
-                                        
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- 상단 -->
+                <div class="topSide" style="box-sizing: inherit">
 
-                    <!-- Earnings (Annual) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body" th:onclick="location.href='ongoing/list'">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            출 고</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${responseDto.todayOngoingTotalCount} + ' 개'">
-                                           
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Tasks Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body" th:onclick="location.href='stock/list'">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1" >
-                                            재고 부족 상품
-                                        </div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${responseDto.warningStockProduct}">
-                                                <!--재고 부족 상품 -->
+                    <!-- Content Row -->
+                    <div class="row justify-content-between">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body" th:onclick="location.href='/incoming/list'">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                입 고
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <p th:if="${responseDto.todayTotalIncomingCount != null}"
+                                                   th:text="${responseDto.todayTotalIncomingCount} + ' 개'"></p>
+                                                <p th:if="${responseDto.todayTotalIncomingCount == null}"
+                                                   th:text="'오늘 입고가 없습니다'"></p>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pending Requests Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-warning shadow h-100 py-2">
-                            <div class="card-body" th:onclick="location.href='/order/list'">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            신규 주문</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${responseDto.newOrder} + ' 건'">
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Annual) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body" th:onclick="location.href='ongoing/list'">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                출 고
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <p th:if="${responseDto.todayTotalOngoingCount != null}"
+                                                   th:text="${responseDto.todayTotalOngoingCount} + ' 개'"></p>
+                                                <p th:if="${responseDto.todayTotalOngoingCount == null}"
+                                                   th:text="'오늘 출고가 없습니다.'"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Content Row -->
-                <div class="row">
-                    <!-- Earnings Overview -->
-                    <div class="col-xl-8 col-lg-7">
-                        <div class="chart">
-                            <canvas id="myAreaChart"></canvas>
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body" th:onclick="location.href='/order/list'">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                신규 주문
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <p th:if="${responseDto.newOrder != null}"
+                                                   th:text="${responseDto.newOrder} + ' 건'"/>
+                                                <p th:if="${responseDto.newOrder == null}"
+                                                   th:text="'신규 주문건이 없습니다.'"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
+                        <!-- Tasks Card Example -->
+                        <!--                        <div class="col-xl-3 col-md-6 mb-4">-->
+                        <!--                            <div class="card border-left-info shadow h-100 py-2">-->
+                        <!--                                <div class="card-body" th:onclick="location.href='stock/list'">-->
+                        <!--                                    <div class="row no-gutters align-items-center">-->
+                        <!--                                        <div class="col mr-2">-->
+                        <!--                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">-->
+                        <!--                                                재고 부족 상품-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="row no-gutters align-items-center">-->
+                        <!--                                                &lt;!&ndash;                                            <div class="h5 mb-0 font-weight-bold text-gray-800">&ndash;&gt;-->
+                        <!--                                                &lt;!&ndash;                                                 <p th:if="${responseDto.warningStockProduct != null}"&ndash;&gt;-->
+                        <!--                                                &lt;!&ndash;                                                    th:text="${responseDto.warningStockProduct}"/>&ndash;&gt;-->
+                        <!--                                                &lt;!&ndash;                                                <p th:if="${responseDto.warningStockProduct == null}"&ndash;&gt;-->
+                        <!--                                                &lt;!&ndash;                                                    th:text=""/>&ndash;&gt;-->
+
+                        <!--                                                &lt;!&ndash;                                            </div>&ndash;&gt;-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                        <div class="col-auto">-->
+                        <!--                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
                     </div>
-                    <!-- Revenue Sources -->
-<!--                     <div class="col-xl-4 col-lg-5"> -->
-<!--                         <div class="chart"> -->
-<!--                             <canvas id="myPieChart"></canvas> -->
-<!--                         </div> -->
-<!--                     </div> -->
+                    <!-- rowSide-->
+                    <div class="rowSide">
+
+                        <!-- Content Row -->
+                        <div class="row justify-content-between align-items-center">
+                            <!-- Earnings Overview -->
+                            <div class="col-xl-6 col-md-6 mb-6">
+                                <div class="chart" style="height: 300px;">
+                                    <canvas id="myAreaChart"></canvas>
+                                </div>
+                            </div>
+                            <!-- Revenue Sources -->
+                            <!--                     <div class="col-xl-4 col-lg-5"> -->
+                            <!--                         <div class="chart"> -->
+                            <!--                             <canvas id="myPieChart"></canvas> -->
+                            <!--                         </div> -->
+                            <!--                     </div> -->
+                            <div class="col-xl-6 col-md-6 mb-6">
+                                <div class="tableBack" style="height: 300px;">
+                                    <label class="text-xs font-weight-bold text-info text-uppercase mb-1">재 고</label>
+                                    <table class="table " style="text-align: center;">
+                                        <thead>
+
+                                        <tr>
+                                            <th scope="col">번 호</th>
+                                            <th scope="col">제품 번호</th>
+                                            <th scope="col">재 고</th>
+                                            <th scope="col">안전 재고</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr th:each="product, iterStat : ${responseDto.productList}">
+                                            <th th:text="${iterStat.count}"></th>
+                                            <td th:text="${product.productId}"></td>
+                                            <td th:text="${product.stockCount}"></td>
+                                            <td th:text="${product.safetyStock}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Main Content -->
         </div>
-        <!-- End of Main Content -->
+        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
 
@@ -320,36 +395,36 @@
         }
     });
 
-    var ctx = document.getElementById('myPieChart').getContext('2d');
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Direct', 'Referral', 'Social'],
-            datasets: [{
-                data: [55, 30, 15],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                hoverBorderColor: 'rgba(234, 236, 244, 1)',
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: 'rgb(255, 255, 255)',
-                bodyFontColor: '#858796',
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
-        },
-    });
+    // var ctx = document.getElementById('myPieChart').getContext('2d');
+    // var myPieChart = new Chart(ctx, {
+    //     type: 'doughnut',
+    //     data: {
+    //         labels: ['Direct', 'Referral', 'Social'],
+    //         datasets: [{
+    //             data: [55, 30, 15],
+    //             backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+    //             hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+    //             hoverBorderColor: 'rgba(234, 236, 244, 1)',
+    //         }],
+    //     },
+    //     options: {
+    //         maintainAspectRatio: false,
+    //         tooltips: {
+    //             backgroundColor: 'rgb(255, 255, 255)',
+    //             bodyFontColor: '#858796',
+    //             borderColor: '#dddfeb',
+    //             borderWidth: 1,
+    //             xPadding: 15,
+    //             yPadding: 15,
+    //             displayColors: false,
+    //             caretPadding: 10,
+    //         },
+    //         legend: {
+    //             display: false
+    //         },
+    //         cutoutPercentage: 80,
+    //     },
+    // });
 </script>
 </body>
 
