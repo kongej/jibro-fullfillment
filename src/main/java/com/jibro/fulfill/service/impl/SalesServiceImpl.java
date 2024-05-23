@@ -59,7 +59,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 	
 //    @Scheduled(cron = "0 * * * * *") 
-	@Scheduled(cron = "0 0 0 1 * *") // 매달 1일 00:00:00에 실행
+	@Scheduled(cron = "0 0 8 1 * *") // 매달 1일 8시에 실행
     public void sendMonthlyEmail() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime from = now.withDayOfMonth(1).minusMonths(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
