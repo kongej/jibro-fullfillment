@@ -7,6 +7,7 @@
     <title>Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         body {
@@ -92,25 +93,25 @@
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{/product/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>상품 관리</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{incoming/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>입고 내역</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{ongoing/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>출고 내역</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{stock/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>재고 관리</span>
                 </a>
@@ -119,25 +120,25 @@
             <hr class="sidebar-divider">
 
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{/order/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>주문 내역</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{/sales/summary}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>매출 현황</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{/seller/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>판매 업체</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" th:href="@{/vendor/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>협력 업체</span>
                 </a>
@@ -257,11 +258,11 @@
                         </div>
                     </div>
                     <!-- Revenue Sources -->
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="chart">
-                            <canvas id="myPieChart"></canvas>
-                        </div>
-                    </div>
+<!--                     <div class="col-xl-4 col-lg-5"> -->
+<!--                         <div class="chart"> -->
+<!--                             <canvas id="myPieChart"></canvas> -->
+<!--                         </div> -->
+<!--                     </div> -->
                 </div>
             </div>
             <!-- /.container-fluid -->
