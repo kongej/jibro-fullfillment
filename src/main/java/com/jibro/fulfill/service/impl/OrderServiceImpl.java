@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService{
 
 		OrderSendAPIDto orderSendApiDto = new OrderSendAPIDto();
 		orderSendApiDto.setOrderId(orderId);
-		orderSendApiDto.setStatus(1);
+		orderSendApiDto.setStatus(2);
 		orderSendApiDto.setInvc(ongoing.getInvc());
 		
 		
