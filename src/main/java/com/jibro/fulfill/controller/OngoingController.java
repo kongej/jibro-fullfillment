@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jibro.fulfill.dto.ongoing.OngoingListPageDto;
-import com.jibro.fulfill.entity.Ongoing;
 import com.jibro.fulfill.service.OngoingService;
 import com.jibro.fulfill.service.StockService;
 

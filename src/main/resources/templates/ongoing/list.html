@@ -66,7 +66,6 @@
             text-align: center;
         }
     </style>
-    </style>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -207,14 +206,14 @@
 						<th>택배사</th>
 					</tr>
 					<tr th:each="ongoingList : ${ongoingList}">
-						<td th:text="${ongoingListStat.count+(page-1)*10}" ></td>
-						<td th:text="${ongoingList.ongoingId}" ></td>
-						<td th:text="${#temporals.format(ongoingList.createdAt, 'yyyy-MM-dd')}" ></td>
-						<td th:text="${ongoingList.invc}" ></td>
-						<td th:text="${ongoingList.order.orderId}" ></td>
-						<td th:text="${ongoingList.order.product.productId}" ></td>
-						<td th:text="${ongoingList.order.count}" ></td>
-						<td th:text="${ongoingList.delever.companyId}" ></td>
+						<td th:text="${ongoingListStat.count+(page-1)*10}" style="width:8%;" ></td>
+						<td th:text="${ongoingList.ongoingId}" style="width:20%;" ></td>
+						<td th:text="${#temporals.format(ongoingList.createdAt, 'yyyy-MM-dd')}" style="width:12%;"></td>
+						<td th:text="${ongoingList.invc}" style="width:12%;"></td>
+						<td th:text="${ongoingList.order.orderId}" style="width:12%;"></td>
+						<td th:text="${ongoingList.order.product.productId}" style="width:12%;"></td>
+						<td th:text="${ongoingList.order.count}" style="width:10%;"></td>
+						<td th:text="${ongoingList.delever.companyId}" style="width:10%;"></td>
 					</tr>
 					<tr th:if="!${#lists.size(ongoingList)}">
 						<td colspan="8" ><span>데이터가 없습니다.</span></td>
@@ -229,6 +228,7 @@
 		  </div>
 		</div>	
 	</div>
-  </div>		
+  </div>
+  </div>
 </body>
 </html>

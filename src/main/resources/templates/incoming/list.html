@@ -207,20 +207,20 @@
 					</tr>
 					
 					<tr th:each="incomingList : ${incomingList}">
-						<td th:text="${incomingListStat.count+(page-1)*10}"></td>
-						<td>
+						<td th:text="${incomingListStat.count+(page-1)*10}" style="width:5%;"></td>
+						<td style="width:10%;">
 							<span th:if="${incomingList.orderStatus} == '0'" th:text="입고대기" ></span>
 							<span th:if="${incomingList.orderStatus} == '1'" th:text="입고완료" ></span>
 						</td>
-						<td th:text="${incomingList.incomingId}" ></td>
-						<td>
+						<td th:text="${incomingList.incomingId}" style="width:15%;" ></td>
+						<td style="width:13%;">
 							<span th:if="${incomingList.orderStatus} == '1'" th:text="${#temporals.format(incomingList.updatedAt, 'yyyy-MM-dd')}" ></span>
 						</td>
-						<td th:text="${incomingList.product.productId}" ></td>
-						<td th:text="${incomingList.incomingCount}" ></td>
-						<td th:text="${incomingList.product.cost}" ></td>
-						<td th:text="${incomingList.total}" ></td>
-						<td th:text="${incomingList.product.maker.companyId}" ></td>
+						<td th:text="${incomingList.product.productId}" style="width:10%;"></td>
+						<td th:text="${incomingList.incomingCount}" style="width:10%;"></td>
+						<td th:text="${incomingList.product.cost}" style="width:10%;"></td>
+						<td th:text="${incomingList.total}" style="width:15%;" ></td>
+						<td th:text="${incomingList.product.maker.companyId}" style="width:10%;"></td>
 					</tr>
 					<tr th:if="!${#lists.size(incomingList)}">
 						<td colspan="9"><span>데이터가 없습니다.</span></td>
@@ -235,6 +235,7 @@
 		  </div>
 		</div>	
 	</div>
+</div>
 </div>
 </body>
 </html>
