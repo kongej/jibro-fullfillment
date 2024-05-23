@@ -25,6 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	// 제품 리스트에서 사용 중인 companyId 확인 여부
 	//boolean existsByMaker_Id(Long companyId);
 	
-    @Query("SELECT new com.jibro.fulfill.dto.MainProductSummaryDto(p.productId, p.stockCount, p.safetyStock) FROM Product p")
+    @Query("SELECT new com.jibro.fulfill.dto.main.ProductSummaryDto(p.productId, p.stockCount, p.safetyStock) FROM Product p")
     List<ProductSummaryDto> findProductSummaries();
 }
