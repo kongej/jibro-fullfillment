@@ -35,10 +35,16 @@ public class ApiServiceImpl implements ApiService {
                 .baseUrl("http://localhost:9002")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(()-> new EntityNotFoundException("orderid not found productId : " + orderId));
-        Product product = productRepository.findById(order.getProduct().getProductId())
-                .orElseThrow(()-> new EntityNotFoundException("updateStock not found with id : " + order.getProduct().getProductId()));
+        Product product;
+        if (orderId.length()> 6) {
+            Order order = orderRepository.findById(orderId)
+                    .orElseThrow(() -> new EntityNotFoundException("orderid not found productId : " + orderId));
+            product = productRepository.findById(order.getProduct().getProductId())
+                    .orElseThrow(() -> new EntityNotFoundException("updateStock not found with id : " + order.getProduct().getProductId()));
+        } else{
+            product = productRepository.findById(orderId)
+                    .orElseThrow(() -> new EntityNotFoundException("updateStock not found with id : " + orderId));
+        }
 
         SellerStockDto sellerStockDto = new SellerStockDto();
         sellerStockDto.setProductId(product.getProductId());
@@ -95,12 +101,25 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public void updateIncoming(IncomingApiDto incomingApiDto) {
+    public Incoming updateIncoming(IncomingApiDto incomingApiDto) {
         Incoming incomingResponse = incomingRepository.findById(incomingApiDto.getOrderId())
                 .orElseThrow(EntityNotFoundException::new);
         incomingResponse.setOrderStatus(1);
         incomingResponse.setIncomingCount(incomingApiDto.getVendorQuantity());
-        this.incomingRepository.save(incomingResponse);
-
+        Incoming incoming = this.incomingRepository.save(incomingResponse);
+        return incoming;
     }
+
+    /* product 업데이트 */
+    @Override
+    public String updateStock(Incoming incoming) {
+        Product product = this.productRepository.findById(incoming.getProduct().getProductId())
+                .orElseThrow(EntityNotFoundException::new);
+        product.setStockCount(product.getStockCount() + incoming.getIncomingCount());
+
+        this.productRepository.save(product);
+        return product.getProductId();
+    }
+
+
 }
