@@ -17,6 +17,42 @@
        table {
            margin-top: 10px;
       }
+      
+       input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+			opacity: 1;
+		}
+      
+      .modal {
+	    width: 800px;
+	    position:absolute;
+	    z-index: 999;
+	    top: 200px;
+	    left: 50%;
+	   	margin: 0px 0 0 -325px;
+	    display: none;
+		border-radius: 10px;
+	}
+	
+	.modal.show {
+		display: block;	
+	}
+	
+	.modalBack{
+		position: fixed;
+		background-color: black;
+		opacity: 0.4;
+		top:0;
+		left:0;
+		z-index:990;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+	
+	.modalBack.show{
+		display: block;
+	}
+	
        .container{
         	margin-top: 10px;
         }
@@ -75,7 +111,39 @@
 			$("#comboBox").val("[[${searchType}]]").prop("selected",true);
 		}
 		
+		$('#insertCount').on('input', function() {
+        	$('#totalCost').val($('#insertCount').val()*$('#insertCost').val());
+        });
 	});
+	
+	function update() {
+		 if(!confirm('수정하시겠습니까?')){
+            return false;
+        }
+	}
+	
+	function incoming(num){
+		var productId = $(".productId");
+		var productName = $(".productName");
+		var cost = $(".cost");
+		var companyId = $(".companyId");
+		
+		$('.modalBack').addClass("show");
+		$('.modal').addClass("show");
+		
+		$('#insertProductId').val($(productId[num]).val());
+		$('#insertProductName').val($(productName[num]).val());
+		$('#insertCost').val($(cost[num]).val());
+		$('#insertCompanyId').val($(companyId[num]).val());
+		$('#totalCost').val($('#insertCount').val()*$('#insertCost').val());
+	}
+	
+	function modalClose(){
+		$('#totalCost').val(0);
+		$('#insertCount').val(1)
+		$('.modalBack').removeClass("show");
+		$('.modal').removeClass("show");
+	}
 </script>
 </head>
 <body>
@@ -149,65 +217,63 @@
 <div id="content-wrapper">
         <div class="card">
 	        <div class="card-header">
-			<h3>재고 관리</h3>
-			<hr>
-			<div class="row mt-3 mb-3">
-			<div class="table-responsive">	
-			<form th:action="@{/stock/list}" method="get">
-				<div class="row mt-3" >
-					<div class="col" style="text-align: right;">
-						<select id="comboBox" name="searchType" class="form-select" style="display: inline-block; width:auto;">
-							<option value="searchProductId" >제품번호</option>
-							<option value="searchCompanyId" >거래처</option>
-						</select>
-						<input th:if="${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" th:value="${searchId}" />
-						<input th:if="!${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" />
-						<input type="submit" th:value="검색" class="btn btn-primary" />
-					</div>
-				</div>
-			</form>
-				<table class="table table-bordered table-striped">
-					<tr>
-						<th>순번</th>
-						<th>제품번호</th>
-						<th>제품명</th>
-						<th>가격</th>
-						<th>수량</th>
-						<th>안전수량</th>
-						<th>거래처 코드</th>
-						<th>주문</th>
-					</tr>
-					<tr th:each="stockList : ${stockList}">
-							<td th:text="${stockListStat.count+(page-1)*10}" ></td>
-							<td th:text="${stockList.productId}" ></td>
-							<td th:text="${stockList.productName}" ></td>
-							<td th:text="${stockList.cost}" ></td>
-							<td><span th:text="${stockList.stockCount}"></span></td>
-							<td>
-								<form th:action="@{/stock/update}" method="post">
-									<input type="hidden" th:name="page" th:value="${page}" />
-									<input type="hidden" th:name="searchId" th:value="${searchId}" />
-									<input type="hidden" th:name="searchType" th:value="${searchType}" />
-									<input type="hidden" th:name="productId" th:value="${stockList.productId}" />
-									<input type="number" class="form-control"  name="safetyStock" th:value="${stockList.safetyStock}"  min=0 step=1 style="display: inline-block; width: 80px;"/>
-									<input type="submit" value="수정" class="btn btn-primary" />
-								</form>
-							</td>
-							<td><span th:text="${stockList.maker.companyId}" ></span></td>	
-							<td>
-								<form th:action="@{/incoming/insertForm}" method="post">
-									<input type="hidden" th:name="productId" th:value="${stockList.productId}">
-									<input type="hidden" th:name="productName" th:value="${stockList.productName}">
-									<input type="hidden" th:name="cost" th:value="${stockList.cost}">
-									<input type="hidden" th:name="maker" th:value="${stockList.maker.companyId}">
-									<input type="submit" value="입고요청" class="btn btn-primary" />
-								</form>
-							</td>
-					</tr>
-					<tr th:if="!${#lists.size(stockList)}">
-						<td colspan="8"><span>데이터가 없습니다.</span></td>
-					</tr>
-				</table>
+	<h3>재고 관리</h3>
+	<hr>
+	<div class="row mt-3 mb-3">
+	<div class="table-responsive">	
+	<form th:action="@{/stock/list}" method="get">
+		<div class="row mt-3" >
+			<div class="col" style="text-align: right;">
+				<select id="comboBox" name="searchType" class="form-select" style="display: inline-block; width:auto;">
+					<option value="searchProductId" >제품번호</option>
+					<option value="searchCompanyId" >거래처</option>
+				</select>
+				<input th:if="${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" th:value="${searchId}" />
+				<input th:if="!${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" />
+				<input type="submit" th:value="검색" class="btn btn-primary" />
+			</div>
+		</div>
+	</form>
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>순번</th>
+				<th>제품번호</th>
+				<th>제품명</th>
+				<th>가격</th>
+				<th>수량</th>
+				<th>안전수량</th>
+				<th>거래처 코드</th>
+				<th>주문</th>
+			</tr>
+			<tr th:each="stockList : ${stockList}">
+					<td th:text="${stockListStat.count+(page-1)*10}" ></td>
+					<td th:text="${stockList.productId}" ></td>
+					<td th:text="${stockList.productName}" ></td>
+					<td th:text="${stockList.cost}" ></td>
+					<td><span th:text="${stockList.stockCount}"></span></td>
+					<td>
+						<form th:action="@{/stock/update}" method="post">
+							<input type="hidden" th:name="page" th:value="${page}" />
+							<input type="hidden" th:name="searchId" th:value="${searchId}" />
+							<input type="hidden" th:name="searchType" th:value="${searchType}" />
+							<input type="hidden" th:name="productId" th:value="${stockList.productId}" />
+							<input type="number" class="form-control"  th:id="safetyStock" th:name="safetyStock" th:value="${stockList.safetyStock}"  min=0 step=1 style="display: inline-block; width: 80px;"/>
+							<input type="submit" value="수정" class="btn btn-primary" th:onclick="return update()" />
+						</form>
+					</td>
+					<td><span th:text="${stockList.maker.companyId}" ></span></td>	
+					<td>
+							<input type="hidden" th:class="productId" th:value="${stockList.productId}">
+							<input type="hidden" th:class="productName" th:value="${stockList.productName}">
+							<input type="hidden" th:class="cost" th:value="${stockList.cost}">
+							<input type="hidden" th:class="companyId" th:value="${stockList.maker.companyId}">
+							<input type="button" value="입고요청" class="btn btn-primary" th:onclick="incoming([[${stockListStat.index}]])" />
+					</td>
+			</tr>
+			<tr th:if="!${#lists.size(stockList)}">
+				<td colspan="8"><span>데이터가 없습니다.</span></td>
+			</tr>
+		</table>
 				<div class="col" th:if="${totalPage > 1}"  style="text-align:center;">
 					<span th:each="index : ${#numbers.sequence(1, totalPage)}">
 						<a th:text="${index}" th:style="${page == index ? 'font-weight: bold;': ''}" th:href="@{/stock/list?searchType={type}&searchId={id}&page={count}(type=${searchType}, id=${searchId}, count=${indexStat.count})}"></a>
@@ -217,6 +283,39 @@
 		  </div>
 		</div>	
 	</div>
+  </div>
+  <div class="modalBack"> </div>
+  <div class="modal" >
+  <div class="card">
+  <div class="card-header" style="padding: 20px;">
+					<h3>입고 요청</h3>
+					<hr>
+					<form th:action="@{/incoming/insert}" method="post">
+						<div class="mb-2">
+							<span>제품번호<input type="text" th:id="insertProductId" th:name="product" class="form-control"  readonly></span>
+						</div>
+						<div class="mb-2">
+							<span>제품명<input type="text" th:id="insertProductName"   class="form-control" readonly></span>
+						</div>
+						<div class="mb-2">	
+							<span>수량<input type="number" th:id="insertCount"  th:name="incomingCount" class="form-control" th:value="1" min=1 step=1 style="text-align:center; width: 80px;"></span>
+						</div>
+						<div class="mb-2">							
+							<span>가격<input type="text" th:id="insertCost"  class="form-control" readonly></span>
+						</div>
+						<div class="mb-2">							
+							<span>합계<input type="text" th:id="totalCost" th:name="total" class="form-control" readonly></span>
+						</div>
+						<div class="mb-2">						
+							<span>거래처코드<input type="text" th:id="insertCompanyId"  class="form-control" readonly></span>
+						</div>
+						<span>						
+							<input type="submit" th:value="요청하기" class="btn btn-primary" />
+							<input type="button"  value="취소" class="btn btn-primary" onclick="modalClose()" />
+						</span>
+					</form>
+	 			</div>
+	 			</div>	
   </div>		
 </body>
 </html>

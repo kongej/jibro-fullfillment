@@ -1,5 +1,7 @@
 package com.jibro.fulfill.repository;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +20,5 @@ public interface OngoingRepository extends JpaRepository<Ongoing, String> {
 	public Page<Ongoing> findByInvcContains(Integer searchId, Pageable pageable);
 	@Query("SELECT o FROM Ongoing o WHERE CAST(o.invc AS string) LIKE %:searchId%")
 	public Page<Ongoing> findByInvcContainingOne(@Param("searchId") String searchId, Pageable pageable);
-	
+	public Page<Ongoing> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 }

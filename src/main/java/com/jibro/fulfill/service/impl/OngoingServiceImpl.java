@@ -1,6 +1,9 @@
 package com.jibro.fulfill.service.impl;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +34,13 @@ public class OngoingServiceImpl implements OngoingService {
 	
 	@Autowired
 	CompanyRepository companyRepository;
-
+	
 	public OngoingServiceImpl(OngoingRepository ongoingRepository) {
 		this.ongoingRepository = ongoingRepository;
 	}
 
 	@Override
-	public OngoingListPageDto ongoingList(String searchType, String searchId, Integer page) throws Exception {
+	public OngoingListPageDto ongoingList(String startDate, String endDate, String searchType, String searchId, Integer page) throws Exception {
 		final Integer pageSize = 10;
 		
 		page -= 1;
@@ -45,9 +48,9 @@ public class OngoingServiceImpl implements OngoingService {
 		Pageable pageable = PageRequest.of(page, pageSize, Direction.DESC, "createdAt");
 		Page<Ongoing> ongoingPage;
 		
-		if (searchId == null || searchId.trim() == "") {
+		if ((searchId == null || searchId.trim() == "") && ((startDate==null && endDate==null) || (startDate=="" && endDate==""))) {
 			ongoingPage = this.ongoingRepository.findAll(pageable);
-		}else {
+		}else if(searchId != null && (startDate==null && endDate==null || (startDate=="" && endDate==""))){
 			if(searchType.equals("searchOngoingId")){
 				ongoingPage = this.ongoingRepository.findByOngoingIdContains(searchId, pageable);
 				
@@ -60,6 +63,13 @@ public class OngoingServiceImpl implements OngoingService {
 			}else {
 				ongoingPage = this.ongoingRepository.findByInvcContainingOne(searchId, pageable);
 			}
+		}else {
+			LocalDate localStart = LocalDate.parse(startDate);
+			LocalDate localEnd = LocalDate.parse(endDate);
+			LocalDateTime start = LocalDateTime.of(localStart, LocalTime.MIN);
+			LocalDateTime end = LocalDateTime.of(localEnd, LocalTime.MAX);
+		
+			ongoingPage = this.ongoingRepository.findByCreatedAtBetween(start, end, pageable);
 		}
 		
 		List<Ongoing> ongoings = ongoingPage.getContent();

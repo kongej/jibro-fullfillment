@@ -1,5 +1,7 @@
 package com.jibro.fulfill.repository;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +14,5 @@ public interface IncomingRepository extends JpaRepository<Incoming, String> {
 	public Page<Incoming> findAll(Pageable pageable);
 	public Page<Incoming> findByIncomingIdContains(String searchId, Pageable pageable);
 	public Page<Incoming> findByProductProductIdContains(String searchId, Pageable pageable);
-	
+	public Page<Incoming> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 }

@@ -76,6 +76,23 @@
 			$("#comboBox").val("[[${searchType}]]").prop("selected",true);
 		}
 	});
+	
+	function selectDate(str){
+
+		if(str == 'reset'){
+			$('#endDate').attr('min', '');
+			$('#startDate').attr('max', '');
+			$('#endDate').attr('value', '');
+			$('#startDate').attr('value', '');
+		}
+		if(str == 'start'){
+			$('#endDate').attr('min', $('#startDate').val());
+		}
+			
+		if(str == 'end'){
+			$('#startDate').attr('max', $('#endDate').val());
+		}
+	}
 </script>
 </head>
 <body>
@@ -153,21 +170,31 @@
 			<hr>
 		    <div class="row mt-3 mb-3">
 			<div class="table-responsive">	
-			<form th:action="@{/ongoing/list}" method="get">
+			
 					<div class="row mt-3">
-						<div class="col" style="text-align: right;">
-							<select id="comboBox" name="searchType" class="form-select" style="display: inline-block; width:auto;">
-								<option value="searchOngoingId" >출고번호</option>
-								<option value="searchProductId" >제품번호</option>
-								<option value="searchOrderId" >주문번호</option>
-								<option value="searchInvc" >송장번호</option>
-							</select>				
-							<input th:if="${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" th:value="${searchId}" />
-							<input th:if="!${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" />
-							<input type="submit" th:value="검색"  class="btn btn-primary" />
+						<div class="col" style="text-align: left;">
+							<form th:action="@{/ongoing/list}" method="get">
+								<input type="date" th:id="startDate" th:name="startDate" class="form-control" th:value="${startDate}" th:onchange="selectDate('start')" style="display: inline-block; width:140px;" required>
+								<span th:text="| ~ |"></span>
+								<input type="date" th:id="endDate" th:name="endDate" class="form-control" th:value="${endDate}" th:onchange="selectDate('end')" style="display: inline-block; width:140px;" required >
+								<input type="submit" th:value="검색" class="btn btn-primary" />
+								<input type="reset" th:value="리셋"  th:onclick="selectDate('reset')" class="btn btn-primary" />
+							</form>	
 						</div>
-					</div>				
-			</form>
+						<div class="col" style="text-align: right;">
+							<form th:action="@{/ongoing/list}" method="get">
+								<select id="comboBox" name="searchType" class="form-select" style="display: inline-block; width:auto;">
+									<option value="searchOngoingId" >출고번호</option>
+									<option value="searchProductId" >제품번호</option>
+									<option value="searchOrderId" >주문번호</option>
+									<option value="searchInvc" >송장번호</option>
+								</select>				
+								<input th:if="${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" th:value="${searchId}" />
+								<input th:if="!${searchId}" type="text" class="form-control" style="display: inline-block; width:250px;"  th:name="searchId" />
+								<input type="submit" th:value="검색"  class="btn btn-primary" />
+							</form>
+						</div>
+					</div>	
 				<table class="table table-bordered table-striped">
 					<tr>
 						<th>순번</th>
@@ -182,7 +209,7 @@
 					<tr th:each="ongoingList : ${ongoingList}">
 						<td th:text="${ongoingListStat.count+(page-1)*10}" ></td>
 						<td th:text="${ongoingList.ongoingId}" ></td>
-						<td th:text="${ongoingList.createdAt}" ></td>
+						<td th:text="${#temporals.format(ongoingList.createdAt, 'yyyy-MM-dd')}" ></td>
 						<td th:text="${ongoingList.invc}" ></td>
 						<td th:text="${ongoingList.order.orderId}" ></td>
 						<td th:text="${ongoingList.order.product.productId}" ></td>
@@ -195,14 +222,13 @@
 				</table>
 				<div class="col" th:if="${totalPage > 1}"  style="text-align:center;">
 					<span th:each="index : ${#numbers.sequence(1, totalPage)}">
-						<a th:text="${index}" th:style="${page == index ? 'font-weight: bold;': ''}" th:href="@{/ongoing/list?searchType={type}&searchId={id}&page={count}(type=${searchType}, id=${searchId}, count=${indexStat.count})}"></a>
+						<a th:text="${index}" th:style="${page == index ? 'font-weight: bold;': ''}" th:href="@{/ongoing/list?startDate={start}&endDate={end}&searchType={type}&searchId={id}&page={count}(start=${startDate}, end=${endDate}, type=${searchType}, id=${searchId}, count=${indexStat.count})}"></a>
 					</span>	
 				</div>
 			 </div>
 		  </div>
 		</div>	
 	</div>
-  </div>	
-</div>		
+  </div>		
 </body>
 </html>

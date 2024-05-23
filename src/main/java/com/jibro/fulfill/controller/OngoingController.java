@@ -18,31 +18,21 @@ public class OngoingController {
 	StockService stockService;
 	
 	@GetMapping("ongoing/list")
-	public ModelAndView ongoingList(String searchType, String searchId, Integer page) throws Exception{
+	public ModelAndView ongoingList(String startDate, String endDate, String searchType, String searchId, Integer page) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		if (page == null) page=1;
 		
-		OngoingListPageDto ongoingList = this.ongoingService.ongoingList(searchType, searchId, page);
+		OngoingListPageDto ongoingList = this.ongoingService.ongoingList(startDate, endDate, searchType, searchId, page);
 		mav.addObject("ongoingList",ongoingList.getOngoings());
 		mav.addObject("lastPage", ongoingList.isLastPage());
 		mav.addObject("totalPage", ongoingList.getTotalPage());
 		
+		mav.addObject("startDate", startDate);
+		mav.addObject("endDate", endDate);
+		mav.addObject("searchType", searchType);
 		mav.addObject("searchId", searchId);
 		mav.addObject("page", page);
-		mav.addObject("searchType", searchType);
 		mav.setViewName("ongoing/list");
 		return mav;
 	}
-	
-//	@GetMapping("ongoing/insert")
-//	public void ongoingInsert() throws Exception{
-//
-//		String orderId = "ORDER002";
-//		Ongoing ongingData = this.ongoingService.ongoingInsert(orderId);
-//
-//		String productId = ongingData.getOrder().getProduct().getProductId();
-//		Integer count = ongingData.getOrder().getCount();
-//		this.stockService.stockUpdate(productId,count);
-//
-//	}
 }
