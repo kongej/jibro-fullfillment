@@ -209,8 +209,8 @@
 					<tr th:each="incomingList : ${incomingList}">
 						<td th:text="${incomingListStat.count+(page-1)*10}" style="width:5%;"></td>
 						<td style="width:10%;">
-							<span th:if="${incomingList.orderStatus} == '0'" th:text="입고대기" ></span>
-							<span th:if="${incomingList.orderStatus} == '1'" th:text="입고완료" ></span>
+							<span th:if="${incomingList.orderStatus} == '0'" th:text="입고대기" style="color: red; font-weight: bold;"  ></span>
+							<span th:if="${incomingList.orderStatus} == '1'" th:text="입고완료" style="color: green; font-weight: bold;"></span>
 						</td>
 						<td th:text="${incomingList.incomingId}" style="width:15%;" ></td>
 						<td style="width:13%;">
