@@ -24,13 +24,127 @@
           width : 150px;
           height : auto;
         }   
+        .outerSide {
+            width: 250px;
+        }
+        .sidebar {
+            background-color: #4e73df;
+            width: 250px;
+            height: 100vh;
+            padding-top: 20px;
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .sidebar .nav-link.active {
+            background-color: #2e59d9;
+        }
+        #wrapper {
+            display: flex;
+        }
+        #content-wrapper {
+            padding: 20px;
+            flex: 1;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .chart {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #Logo {
+            text-decoration: none;
+            color: white;
+            font-size: 50px;
+            font-family: Arial;
+            font-weight: bold;
+        }
+        #Logo:hover {
+            text-decoration: none;
+        }
+        .sidebar > li {
+            text-align: center;
+        }
     </style>
 	</head>
 	<body>
-	<div class="container">
+	<div id="wrapper">
+	    <div class="outerSide">
+	        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+	            <!-- Sidebar - Brand -->
+	            <a class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none" th:href="@{/main}">
+	                <div class="sidebar-brand-icon rotate-n-15">
+	                    <i class="fas fa-laugh-wink"></i>
+	                </div>
+	                <div class="sidebar-brand-text mx-3" id="Logo">Jibro</div>
+	            </a>
+	            <!-- Divider -->
+	            <hr class="sidebar-divider my-0">
+	            <!-- Nav Item - Dashboard -->
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/product/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>상품 관리</span>
+	                </a>
+	            </li>
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/incoming/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>입고 내역</span>
+	                </a>
+	            </li>
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/ongoing/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>출고 내역</span>
+	                </a>
+	            </li>
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/stock/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>재고 관리</span>
+	                </a>
+	            </li>
+	            <!-- Divider -->
+	            <hr class="sidebar-divider">
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/order/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>주문 내역</span>
+	                </a>
+	            </li>
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/sales/summary}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>매출 현황</span>
+	                </a>
+	            </li>
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/seller/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>판매 업체</span>
+	                </a>
+	            </li>
+	            <li class="nav-item active">
+	                <a class="nav-link" th:href="@{/vendor/list}">
+	                    <i class="fas fa-fw fa-tachometer-alt"></i>
+	                    <span>협력 업체</span>
+	                </a>
+	            </li>
+	            <hr class="sidebar-divider">
+	        </ul>
+	    </div>
+	    <!-- End of Sidebar -->
+
+    <div id="content-wrapper">
 	    <div class="card">
 	        <div class="card-header">
 	            <h3>상품</h3>
+	            <hr>
 	            <div class="row mt-3 mb-3">
 	                <div class="table-responsive">
 	                    <table class="table table-bordered table-striped">
