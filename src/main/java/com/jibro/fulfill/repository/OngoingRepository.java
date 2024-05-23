@@ -21,4 +21,7 @@ public interface OngoingRepository extends JpaRepository<Ongoing, String> {
 	@Query("SELECT o FROM Ongoing o WHERE CAST(o.invc AS string) LIKE %:searchId%")
 	public Page<Ongoing> findByInvcContainingOne(@Param("searchId") String searchId, Pageable pageable);
 	public Page<Ongoing> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+	
+	@Query("SELECT COUNT(o) FROM Ongoing o WHERE o.createdAt BETWEEN :startOfDay AND :endOfDay")
+    Integer findTotalOngoingCountForToday(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
 }

@@ -36,6 +36,9 @@ public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecif
             "ORDER BY FUNCTION('DATE', o.orderDate) DESC")
      List<Object[]> findOrdersGroupedByProductAndDate(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
      
+     @Query("SELECT COUNT(o) FROM Order o WHERE o.orderStatus = 0")
+     Integer countNewOrder();
+     
     default Page<SalesSummaryResponseDto> findOrderSummaries(LocalDateTime from, LocalDateTime to, Pageable pageable) {
         Page<Object[]> results = findOrdersGroupedByProductAndDate(from, to, pageable);
          

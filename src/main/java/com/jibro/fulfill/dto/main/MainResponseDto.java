@@ -1,5 +1,7 @@
 package com.jibro.fulfill.dto.main;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +11,6 @@ public class MainResponseDto {
 
 	private Integer todayTotalIncomingCount;
 	private Integer todayTotalOngoingCount;
-	private Integer stockCount;
-	private Integer safetyStock;
+	private List<ProductSummaryDto> productList;
 	private Integer newOrder;
 }

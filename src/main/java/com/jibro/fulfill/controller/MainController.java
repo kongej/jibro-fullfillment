@@ -18,11 +18,10 @@ public class MainController {
 	@GetMapping("/main")
 	public String main(Model model) {
 		MainResponseDto responseDto = new MainResponseDto();
-		responseDto.setTodayTotalIncomingCount(1);
-		responseDto.setTodayTotalOngoingCount(1);
-		responseDto.setStockCount(100);
-		responseDto.setSafetyStock(20);
-		responseDto.setNewOrder(3);
+		responseDto.setTodayTotalIncomingCount(mainService.getTotalIncomingCountForToday());
+		responseDto.setTodayTotalOngoingCount(mainService.getTotalOngoingCountForToday());
+		responseDto.setProductList(mainService.getProductSummary());
+		responseDto.setNewOrder(mainService.getNewOrderCount());
 		model.addAttribute("responseDto", responseDto);
 	    return "main/main";
 	}
