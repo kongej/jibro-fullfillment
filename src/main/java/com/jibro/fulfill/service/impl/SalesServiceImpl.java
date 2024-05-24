@@ -1,5 +1,7 @@
 package com.jibro.fulfill.service.impl;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import com.jibro.fulfill.dto.sales.SalesSummaryRequestDto;
 import com.jibro.fulfill.dto.sales.SalesSummaryResponseDto;
+import com.jibro.fulfill.dto.sales.SalesWholeDateDto;
 import com.jibro.fulfill.repository.CompanyRepository;
 import com.jibro.fulfill.repository.OrderRepository;
 import com.jibro.fulfill.service.SalesService;
@@ -47,10 +50,15 @@ public class SalesServiceImpl implements SalesService{
 	@Override
 	public void sendEmailClick(String email, LocalDateTime fromDate, LocalDateTime toDate) {
 		List<SalesSummaryResponseDto> sales = orderRepository.findOrderSummariesEmailContent(fromDate, toDate);
+		
+		String preSub = "";
 		String[] emails = email.split(",");
-		String from = fromDate.toString().substring(0,10);
-		String to = toDate.toString().substring(0,10);
-		String subject = from + " ~ " +  to + " 매출 정보";
+		if(fromDate != null && toDate != null) {
+			String from = fromDate.toString().substring(0,10);
+			String to = toDate.toString().substring(0,10);
+			preSub = from + " ~ " +  to + " ";
+		}
+		String subject = preSub + "매출 정보";
 		String text = makeEmailContent(sales, subject);
 		for(String toEmail: emails) {
 			toEmail = toEmail.trim();
