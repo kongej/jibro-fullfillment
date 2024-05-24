@@ -266,29 +266,25 @@ td {
 		    var email = $("#email").val();
 		    var from = $("#from").val();
 		    var to = $("#to").val();
-			    if (from === "" || to === "") {
-				    alert("보내실 매출 정보 기간을 설정해주세요~");
-				} else {
-			    var requestData = {
-			        email: email,
-			        from: from,
-			        to: to
-			    };
-			    
-			    $.ajax({
-			        type: 'POST',
-			        url: '/sales/send-email',
-			        contentType: 'application/json',
-			        data: JSON.stringify(requestData),
-			        success: function(response) {
-			            alert("성공적으로 이메일을 보냈습니다.");
-			        },
-			        error: function(error) {
-			            alert("이메일 보내기 실패했습니다.");
-			        }
-			    });    	
-		    }
-		}
+		    var requestData = {
+		        email: email,
+		        from: from,
+		        to: to
+		    };
+		    
+		    $.ajax({
+		        type: 'POST',
+		        url: '/sales/send-email',
+		        contentType: 'application/json',
+		        data: JSON.stringify(requestData),
+		        success: function(response) {
+		            alert("성공적으로 이메일을 보냈습니다.");
+		        },
+		        error: function(error) {
+		            alert("이메일 보내기 실패했습니다.");
+		        }
+		    });    	
+	    }
 
 
 </script>

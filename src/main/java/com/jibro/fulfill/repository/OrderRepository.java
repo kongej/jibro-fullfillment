@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 
 import com.jibro.fulfill.dto.sales.SalesSummaryResponseDto;
+import com.jibro.fulfill.dto.sales.SalesWholeDateDto;
 import com.jibro.fulfill.entity.Order;
 import com.jibro.fulfill.entity.Product;
 
@@ -35,6 +36,9 @@ public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecif
             "GROUP BY o.product, FUNCTION('DATE', o.orderDate) " +
             "ORDER BY FUNCTION('DATE', o.orderDate) DESC")
      List<Object[]> findOrdersGroupedByProductAndDate(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+     
+     @Query("SELECT MIN(o.orderDate), MAX(o.orderDate) FROM Order o")
+     Object[] findMinAndMaxOrderDates();
      
      @Query("SELECT COUNT(o) FROM Order o WHERE o.orderStatus = 0")
      Integer countNewOrder();
@@ -61,6 +65,6 @@ public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecif
                         ((Number) result[2]).intValue()))
                 .collect(Collectors.toList());
     }
- 
+    
     
 }
